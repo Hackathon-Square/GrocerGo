@@ -1,4 +1,6 @@
-# HACKATHON-SQUARE
+# 开会时间：
+每周周三中国时间7pm，澳洲时间10pm
+周六中国时间6pm，澳洲时间9pm
 
 ## Table of Contents
 - [Group Members](#group-members)
