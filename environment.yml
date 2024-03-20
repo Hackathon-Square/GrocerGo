@@ -1,0 +1,30 @@
+name: square
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - conda-forge
+dependencies:
+  - bzip2=1.0.8=h93a5062_5
+  - ca-certificates=2024.2.2=hf0a4a13_0
+  - faker=24.3.0=pyhd8ed1ab_0
+  - libexpat=2.6.2=hebf3989_0
+  - libffi=3.4.2=h3422bc3_5
+  - libsqlite=3.45.2=h091b4b1_0
+  - libzlib=1.2.13=h53f4e23_5
+  - ncurses=6.4.20240210=h078ce10_0
+  - openssl=3.2.1=h0d3ecfb_1
+  - pip=24.0=pyhd8ed1ab_0
+  - python=3.11.8=hdf0ec26_0_cpython
+  - python-dateutil=2.9.0=pyhd8ed1ab_0
+  - readline=8.2=h92ec313_1
+  - setuptools=69.2.0=pyhd8ed1ab_0
+  - six=1.16.0=pyh6c4a22f_0
+  - tk=8.6.13=h5083fa2_1
+  - typing-extensions=4.10.0=hd8ed1ab_0
+  - typing_extensions=4.10.0=pyha770c72_0
+  - tzdata=2024a=h0c530f3_0
+  - wheel=0.42.0=pyhd8ed1ab_0
+  - xz=5.2.6=h57fd34a_0
+prefix: /Users/yuhengzhang/miniforge3/envs/square
