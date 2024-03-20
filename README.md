@@ -6,10 +6,14 @@
 周六中国时间6pm，澳洲时间9pm
 
 ## Table of Contents
-- [Group Members](#group-members)
-- [Evaluation Plan](#evaluation-plan)
-- [User Interface (UI)](#user-interface-ui)
-- [References and External Resources](#references-and-external-resources)
+- [DDL: 2024 年 4 月 30 日（美国东部时间下午 5：00）](#ddl-2024-年-4-月-30-日美国东部时间下午-500)
+- [开会时间：](#开会时间)
+  - [Table of Contents](#table-of-contents)
+  - [Group Members](#group-members)
+  - [Evaluation Plan](#evaluation-plan)
+  - [User Interface (UI)](#user-interface-ui)
+  - [References and External Resources](#references-and-external-resources)
+  - [Environment management](#environment-management)
 
 
 ## Group Members
@@ -26,7 +30,7 @@
 2. **Why choose us？**
    - **For customer**：可以独自且快速的找到需要的商品...
    - **For saler**：节省人力，提高客户体验，宣传...
-     
+
 4. **需求 & 颗粒度**
    - **用户界面设计**：搜索栏： 提供一个直观的搜索栏，允许用户输入商品名称、类别或关键词。过滤和排序： 允许用户通过价格、距离、评价等因素进行过滤和排序，以便更容易找到所需商品。地图界面： 集成地图功能，显示商店位置和商品的实际位置。
    - **用户账户**：用户登录： 允许用户创建账户，保存其常购商品或常去商店的信息，以提高个性化推荐的准确性。
@@ -45,7 +49,7 @@
          评论和建议： 提供用户提交建议和问题的渠道，以便不断改进App。
    - **隐私和安全**：
          位置权限： 合理使用位置权限，用户可以在需要时授权。
- 
+
 ## User Interface (UI)
 
 
@@ -56,3 +60,16 @@
 - [Find it here](https://developer.squareup.com/explorer/square/catalog-api/list-catalog)
 - [Find it here](https://developer.squareup.com/explorer/square/locations-api/create-location)
 - [Find it here](https://developer.squareup.com/explorer/square/customers-api/create-customer)
+
+## Environment management
+Conda is reconmended to manage the environment with environmet.yml file.
+
+Create the ```square``` environment using environment file.
+```bash
+conda env create -f environment.yml
+```
+
+Update the ```square``` environment file if new dependencies are added.
+```bash
+conda env export > environment.yml
+```
