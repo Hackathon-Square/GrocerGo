@@ -1,49 +1,38 @@
+import os
 import sqlite3
 import random
+from faker import Faker
 
-# Predefined product names
-PRODUCT_NAMES = [
-    "apple", "banana", "orange", "grape", "strawberry", "watermelon", "pineapple", "kiwi", "blueberry", "pear",
-    "peach", "plum", "lemon", "lime", "mango", "cherry", "apricot", "pomegranate", "fig", "nectarine",
-    "avocado", "coconut", "papaya", "cranberry", "raspberry", "blackberry", "gooseberry", "tangerine", "cantaloupe", "honeydew",
-    "peanut", "almond", "cashew", "walnut", "pecan", "hazelnut", "macadamia", "pistachio", "sesame", "flaxseed",
-    "quinoa", "amaranth", "barley", "oats", "wheat", "rice", "corn", "bulgur", "buckwheat", "sorghum",
-    "potato", "carrot", "broccoli", "spinach", "lettuce", "cucumber", "tomato", "onion", "garlic", "ginger",
-    "celery", "bell pepper", "mushroom", "zucchini", "eggplant", "asparagus", "cauliflower", "cabbage", "sweet potato", "pumpkin",
-    "chicken", "beef", "pork", "lamb", "fish", "shrimp", "crab", "lobster", "clam", "oyster",
-    "milk", "cheese", "yogurt", "butter", "cream", "eggs", "sour cream", "ice cream", "whipped cream", "cream cheese",
-    "bread", "bagel", "muffin", "croissant", "roll", "biscuit", "pancake", "waffle", "crepe", "tortilla",
-    "coffee", "tea", "espresso", "latte", "cappuccino", "macchiato", "mocha", "americano", "chai", "matcha"
-]
+fake = Faker()
 
 # Generate fake market database
-def generate_market_database(num_blocks, num_shelves_per_block, num_levels_per_shelf, num_products_per_level):
+def generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SHELF_LEVELS, shelf_num):
     market_database = []
 
-    for block_id in range(1, num_blocks + 1):
-        block_name = f"Block {block_id}"
+    for category, block in PRODUCT_CATEGORIES.items():
+        for product_name in PRODUCT_NAMES.get(category, []):
+            level = random.choice(SHELF_LEVELS.get(category, []))
+            if level is not None:
+                shelf = random.randint(1, shelf_num)
+            else:
+                shelf = None
+            price = round(random.uniform(0.5, 100), 2)
+            unit = random.choice(PRODCT_UNITS.get(category, []))
+            stock = round(1000*random.random(), 2) if unit == 'kg' else random.randint(0, 1000)
+            product_id = fake.uuid4()
 
-        for shelf_number in range(1, num_shelves_per_block + 1):
-            shelf_name = f"Shelf {shelf_number}"
+            product = {
+                'block': block,
+                'shelf': shelf,  # No specific shelf for categories without shelf levels
+                'level': level,
+                'product_name': product_name,
+                'price': price,
+                'unit': unit,
+                'stock': stock,
+                'product_id': product_id
+            }
 
-            for level_number in range(1, num_levels_per_shelf + 1):
-                level_name = f"Level {level_number}"
-
-                for _ in range(num_products_per_level):
-                    product_name = random.choice(PRODUCT_NAMES)
-                    price = round(random.uniform(0.5, 100), 2)
-                    stock = random.randint(0, 100)
-
-                    product = {
-                        'block': block_name,
-                        'shelf': shelf_name,
-                        'level': level_name,
-                        'product_name': product_name,
-                        'price': price,
-                        'stock': stock
-                    }
-
-                    market_database.append(product)
+            market_database.append(product)
 
     return market_database
 
@@ -53,7 +42,7 @@ def create_database_table(path):
     c = conn.cursor()
 
     c.execute('''CREATE TABLE Products
-                 (Block TEXT, Shelf TEXT, Level TEXT, ProductName TEXT, Price REAL, Stock INTEGER)''')
+                 (Block TEXT, Shelf TEXT, Level TEXT, ProductName TEXT, Price REAL, Unit TEXT, Stock REAL, ProductID TEXT)''')
 
     conn.commit()
     conn.close()
@@ -64,25 +53,60 @@ def insert_data_into_database(path, market_database):
     c = conn.cursor()
 
     for product in market_database:
-        c.execute("INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?)",
-                  (product['block'], product['shelf'], product['level'], product['product_name'], product['price'], product['stock']))
+        c.execute("INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                  (product['block'], product['shelf'], product['level'], product['product_name'], product['price'], product['unit'], product['stock'], product['product_id']))
 
     conn.commit()
     conn.close()
 
-# Generate market database
-num_blocks = 5
-num_shelves_per_block = 10
-num_levels_per_shelf = 3
-num_products_per_level = 20
+# Define product categories and their corresponding blocks
+PRODUCT_CATEGORIES = {
+    'fruits_vegetables': 'Block A',
+    'snacks_drinks': 'Block B',
+    'clothes_shoes_hats': 'Block C',
+    'sports_equipment': 'Block D',
+    'personal_care': 'Block E'
+}
+
+# Predefined product names for each category
+PRODUCT_NAMES = {
+    'fruits_vegetables': ["apple", "banana", "orange", "grape", "strawberry", "carrot", "broccoli", "spinach", "lettuce", "watermelon", "pineapple", "kiwi", "blueberry", "pear", "peach", "plum"],
+    'snacks_drinks': ["chips", "cookies", "soda", "water", "juice", "energy drink", "chocolate", "candy", "popcorn", "pretzels", "nuts", "crackers", "coffee", "tea", "milk", "smoothie"],
+    'clothes_shoes_hats': ["t-shirt", "jeans", "jacket", "dress", "sneakers", "boots", "hat", "scarf"],
+    'sports_equipment': ["basketball", "football", "soccer ball", "tennis racket", "yoga mat", "dumbbells", "jump rope"],
+    'personal_care': ["shampoo", "soap", "toothpaste", "toothbrush", "deodorant", "razor", "lotion", "perfume"]
+}
+
+# Predefined product units for each product name
+PRODCT_UNITS = {
+    'fruits_vegetables': ["kg"],
+    'snacks_drinks': ["piece"],
+    'clothes_shoes_hats': ["piece"],
+    'sports_equipment': ["piece"],
+    'personal_care': ["piece"]
+}
+
+# Predefined shelf levels for each category
+SHELF_LEVELS = {
+    'fruits_vegetables': [None],
+    'snacks_drinks': ["Level 1", "Level 2", "Level 3", "Level 4"],
+    'clothes_shoes_hats': [None],
+    'sports_equipment': ["Level 1", "Level 2", "Level 3"],
+    'personal_care': ["Level 1", "Level 2", "Level 3", "Level 4"]
+}
+
 path = "db/market_database.db"
 
-market_database = generate_market_database(num_blocks, num_shelves_per_block, num_levels_per_shelf, num_products_per_level)
+# Generate market database
+market_database = generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SHELF_LEVELS, 8)
 
-# Create database table
-create_database_table(path)
+if not os.path.exists(path):
+    # Create database table
+    create_database_table(path)
 
-# Insert data into database
-insert_data_into_database(path, market_database)
+    # Insert data into database
+    insert_data_into_database(path, market_database)
 
-print(f"Market database has been created in {path}.")
+    print(f"Market database has been created in {path}.")
+else:
+    print(f"Market database already exists in {path}.")
