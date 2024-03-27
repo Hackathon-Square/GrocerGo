@@ -1,6 +1,7 @@
 import sqlite3
 
-def find_product(path, query):
+def find_product(query):
+    path = "./db/market_database.db"
     conn = sqlite3.connect(path)
     c = conn.cursor()
 
@@ -11,9 +12,12 @@ def find_product(path, query):
 
     return products
 
-# Example usage:
-path = "db/market_database.db"
-query = "Banana"
 
-products = find_product(path, query)
-print(products)
+
+
+if __name__ == "__main__":
+
+    query = "Banana"
+
+    products = find_product(query)
+    print(products)
