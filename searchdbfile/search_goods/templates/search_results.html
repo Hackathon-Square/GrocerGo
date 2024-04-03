@@ -1,0 +1,19 @@
+<!-- search_results.html -->
+<form action="{% url 'search_results' %}" method="get">
+    <input type="text" name="query" placeholder="Search fruits...">
+    <button type="submit">Search</button>
+</form>
+<h2>搜索结果: "{{ query }}"</h2>
+{% if products %}
+    <ul>
+        {% for product in products %}
+            <li>{{ product.ProductName }}: {{product.level}}, {{product.block}}, {{product.shelf}}, ${{product.price}}
+         
+            </li>
+            
+
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>未找到匹配的产品。</p>
+{% endif %}
