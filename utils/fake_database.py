@@ -6,7 +6,7 @@ from faker import Faker
 fake = Faker()
 
 # Generate fake market database
-def generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SHELF_LEVELS, shelf_num):
+def generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SHELF_LEVELS, shelf_num, pic_dir):
     market_database = []
 
     for category, block in PRODUCT_CATEGORIES.items():
@@ -20,6 +20,7 @@ def generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SH
             unit = random.choice(PRODCT_UNITS.get(category, []))
             stock = round(1000*random.random(), 2) if unit == 'kg' else random.randint(0, 1000)
             product_id = fake.uuid4()
+            product_pic_path = os.path.join(pic_dir, product_name.replace(" ", "_")+".webp")
 
             product = {
                 'block': block,
@@ -29,7 +30,8 @@ def generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SH
                 'price': price,
                 'unit': unit,
                 'stock': stock,
-                'product_id': product_id
+                'product_id': product_id,
+                'product_pic_path': product_pic_path
             }
 
             market_database.append(product)
@@ -42,7 +44,7 @@ def create_database_table(path):
     c = conn.cursor()
 
     c.execute('''CREATE TABLE Products
-                 (Block TEXT, Shelf TEXT, Level TEXT, ProductName TEXT, Price REAL, Unit TEXT, Stock REAL, ProductID TEXT)''')
+                 (Block TEXT, Shelf TEXT, Level TEXT, ProductName TEXT, Price REAL, Unit TEXT, Stock REAL, ProductID TEXT, ProductPicPath TEXT)''')
 
     conn.commit()
     conn.close()
@@ -53,8 +55,8 @@ def insert_data_into_database(path, market_database):
     c = conn.cursor()
 
     for product in market_database:
-        c.execute("INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                  (product['block'], product['shelf'], product['level'], product['product_name'], product['price'], product['unit'], product['stock'], product['product_id']))
+        c.execute("INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                  (product['block'], product['shelf'], product['level'], product['product_name'], product['price'], product['unit'], product['stock'], product['product_id'], product['product_pic_path']))
 
     conn.commit()
     conn.close()
@@ -98,7 +100,7 @@ SHELF_LEVELS = {
 path = "db/market_database.db"
 
 # Generate market database
-market_database = generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SHELF_LEVELS, 8)
+market_database = generate_market_database(PRODUCT_CATEGORIES, PRODUCT_NAMES, PRODCT_UNITS, SHELF_LEVELS, 8, "./db/pics/webp")
 
 if not os.path.exists(path):
     # Create database table
