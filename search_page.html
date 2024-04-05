@@ -1,0 +1,83 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Page</title>
+<style>
+   body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f7f4f4;
+  }
+  .search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(206, 196, 196, 0.7);
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    
+  }
+  .search-input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    border-radius: 50px;
+  }
+  .search-input:focus {
+    outline: none;
+  }
+  .icon-button {
+    border: none;
+    background: rgba(139, 129, 129, 0.454);
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.3s ease;
+    padding: 10px;
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon-button img {
+    width: 30px;
+    height: 30px;
+    transition: filter 0.3s ease, transform 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+    
+  }
+  .icon-button:hover {
+    transform: scale(1.4);
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
+  }
+</style>
+</head>
+<body>
+
+<div class="search-container">
+  <input type="text" class="search-input" placeholder="Search">
+  <button class="icon-button" title="Voice Search">
+    <img src="C:\SQUARE\ICON\Voice.jpg" alt="Voice">
+  </button>
+  <button class="icon-button" title="Image Search">
+    <img src="C:\SQUARE\ICON\Camera.jpg" alt="Camera">
+  </button>
+  <button class="icon-button" title="Search">
+    <a href="C:\SQUARE\page.html" class="icon-button" title="Search">
+      <img src="C:\SQUARE\ICON\search.jpg" alt="Search">
+    </a>
+    
+  </button>
+</div>
+
+</body>
+</html>
