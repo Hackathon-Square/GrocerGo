@@ -22,7 +22,7 @@
 
     $mysql = new mysqli("localhost", "root", "root", "User");
     if($mysql->connect_errno){
-        die("Disconnection: ". $mysql->connect_error); 
+        die("Disconnection: ". $mysql->connect_error);
     }
 
     if(isset($_POST["reg"])){
@@ -30,7 +30,7 @@
         $mysql->query($sql);
 
         if($mysql ->affected_rows > 0){
-            echo "<script>alert('successful';window.location.href = 'login.html';)</script>";
+            echo "<script>alert('Registration successful'); window.location.href = './login.html';</script>";
         }
     }
-?>  
+?>
