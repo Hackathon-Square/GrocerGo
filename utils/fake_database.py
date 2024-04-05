@@ -73,7 +73,7 @@ PRODUCT_CATEGORIES = {
 # Predefined product names for each category
 PRODUCT_NAMES = {
     'fruits_vegetables': ["apple", "banana", "orange", "grape", "strawberry", "carrot", "broccoli", "spinach", "lettuce", "watermelon", "pineapple", "kiwi", "blueberry", "pear", "peach", "plum"],
-    'snacks_drinks': ["chips", "cookies", "soda", "water", "juice", "energy drink", "chocolate", "candy", "popcorn", "pretzels", "nuts", "crackers", "coffee", "tea", "milk", "smoothie"],
+    'snacks_drinks': ["chips", "cookies", "soda", "water", "juice", "energy drink", "chocolate", "candy", "popcorn", "parker's mini baked pretzels multipack", "wallaby oven baked pretzel twists sea salt", "wallaby mini assorted chocolate pretzels", "salted mixed nuts", "crackers", "coffee", "ceylon tea", "milk", "nice & natural smoothie bar berrylicious"],
     'clothes_shoes_hats': ["t-shirt", "jeans", "jacket", "dress", "sneakers", "boots", "hat", "scarf"],
     'sports_equipment': ["basketball", "football", "soccer ball", "tennis racket", "yoga mat", "dumbbells", "jump rope"],
     'personal_care': ["shampoo", "soap", "toothpaste", "toothbrush", "deodorant", "razor", "lotion", "perfume"]
