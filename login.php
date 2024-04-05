@@ -1,7 +1,7 @@
 <?php
 $mysql = new mysqli("localhost", "root", "jbgsn787", "User");
 if ($mysql->connect_errno) {
-    die("Disconnection: " . $mysql->connect_error); 
+    die("Disconnection: " . $mysql->connect_error);
 }
 $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 $name = $_POST["full_name"];
@@ -14,13 +14,13 @@ if(isset($_POST["login"])){
     if($res){
         if(password_verify($_POST["password"], $res["password_hash"])){
             //if matched, go to next page(profile page? search page?)
-            echo "<script>window.location.href = 'profile.php?uname=$name';</script>"; // Fixed missing quotation mark and removed space in URL parameter
+            echo "<script>window.location.href = 'search_page.html';</script>"; // Fixed missing quotation mark and removed space in URL parameter
         } else {
             //if dismatched
             echo "<script>alert('Incorrect Password! Please try again.'); history.go(-1);</script>"; // Fixed missing quotation mark
         }
     } else {
-        echo "<script>alert('You need to register first!'); history.go(-1);</script>"; // Fixed missing quotation mark
+        echo "<script>alert('You need to register first!'); window.location.href = 'register.html';</script>"; // Fixed missing quotation mark
     }
-} 
+}
 ?>
