@@ -1,7 +1,7 @@
 import sqlite3
 
-def update_product_location(path, product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level):
-    conn = sqlite3.connect(path)
+def update_product_location(product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level):
+    conn = sqlite3.connect(path = "./db/market_database.db")
     c = conn.cursor()
 
     c.execute("UPDATE Products SET Block=?, Shelf=?, Level=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
@@ -10,8 +10,8 @@ def update_product_location(path, product_name, current_block, current_shelf, cu
 
     conn.close()
 
-def update_product_stock(path, product_name, block, shelf, level, new_stock):
-    conn = sqlite3.connect(path)
+def update_product_stock(product_name, block, shelf, level, new_stock):
+    conn = sqlite3.connect(path = "./db/market_database.db")
     c = conn.cursor()
 
     c.execute("UPDATE Products SET Stock=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
@@ -20,8 +20,8 @@ def update_product_stock(path, product_name, block, shelf, level, new_stock):
 
     conn.close()
 
-def update_product_price(path, product_name, block, shelf, level, new_price):
-    conn = sqlite3.connect(path)
+def update_product_price(product_name, block, shelf, level, new_price):
+    conn = sqlite3.connect(path = "./db/market_database.db")
     c = conn.cursor()
 
     c.execute("UPDATE Products SET Price=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
@@ -30,36 +30,37 @@ def update_product_price(path, product_name, block, shelf, level, new_price):
 
     conn.close()
 
-# Example usage:
-path = "db/market_database.db"
-product_name = "Banana"
-current_block = "Block 1"
-current_shelf = "Shelf 5"
-current_level = "Level 2"
-new_block = "Block 2"
-new_shelf = "Shelf 3"
-new_level = "Level 1"
 
-update_product_location(path, product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level)
-print("Location information updated successfully.")
+if __name__ == "__main__":
 
-# Example usage for updating stock:
-path = "db/market_database.db"
-product_name = "Banana"
-block = "Block 1"
-shelf = "Shelf 5"
-level = "Level 2"
-new_stock = 60
+    # Example usage:
+    product_name = "Banana"
+    current_block = "Block 1"
+    current_shelf = "Shelf 5"
+    current_level = "Level 2"
+    new_block = "Block 2"
+    new_shelf = "Shelf 3"
+    new_level = "Level 1"
 
-update_product_stock(path, product_name, block, shelf, level, new_stock)
-print("Stock updated successfully.")
+    update_product_location(product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level)
+    print("Location information updated successfully.")
 
-# Example usage for updating price:
-product_name = "Banana"
-block = "Block 1"
-shelf = "Shelf 5"
-level = "Level 2"
-new_price = 2.25
+    # Example usage for updating stock:
+    product_name = "Banana"
+    block = "Block 1"
+    shelf = "Shelf 5"
+    level = "Level 2"
+    new_stock = 60
 
-update_product_price(path, product_name, block, shelf, level, new_price)
-print("Price updated successfully.")
+    update_product_stock(product_name, block, shelf, level, new_stock)
+    print("Stock updated successfully.")
+
+    # Example usage for updating price:
+    product_name = "Banana"
+    block = "Block 1"
+    shelf = "Shelf 5"
+    level = "Level 2"
+    new_price = 2.25
+
+    update_product_price(product_name, block, shelf, level, new_price)
+    print("Price updated successfully.")

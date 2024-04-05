@@ -17,7 +17,7 @@ def find_product(query):
 
 if __name__ == "__main__":
 
-    query = "Banana"
+    query = "apple"
 
     products = find_product(query)
     print(products)

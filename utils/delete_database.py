@@ -1,7 +1,7 @@
 import sqlite3
 
-def delete_product_by_info(path, product_name, block, shelf, level):
-    conn = sqlite3.connect(path)
+def delete_product_by_info(product_name, block, shelf, level):
+    conn = sqlite3.connect("./db/market_database.db")
     c = conn.cursor()
 
     c.execute("DELETE FROM Products WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
@@ -10,12 +10,14 @@ def delete_product_by_info(path, product_name, block, shelf, level):
 
     conn.close()
 
-# Example usage:
-path = "db/market_database.db"
-product_name = "Banana"
-block = "Block 1"
-shelf = "Shelf 5"
-level = "Level 2"
 
-delete_product_by_info(path, product_name, block, shelf, level)
-print("Product deleted successfully.")
+if __name__ == "__main__":
+
+    # Example usage:
+    product_name = "Banana"
+    block = "Block 1"
+    shelf = "Shelf 5"
+    level = "Level 2"
+
+    delete_product_by_info(product_name, block, shelf, level)
+    print("Product deleted successfully.")

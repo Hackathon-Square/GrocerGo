@@ -1,9 +1,18 @@
 from aiiiiii.intention import use_gpt
 from utils.find_database import *
+from utils.add_database import *
+from utils.delete_database import *
+from utils.update_database import *
+from utils.interaction import *
 import json
+from faker import Faker
+
+fake = Faker()
 
 # user_query = "where is the banana?"
 user_query = "where is the apple?"
+# user_query = "Add new types of apples to the inventory in Shelf 3 of Block E."
+
 model_output = use_gpt(user_query)
 
 try:
@@ -13,24 +22,93 @@ except json.JSONDecodeError:
 
 # 提取动作和对象
 action = model_output_dict.get("Action")
-object_name = model_output_dict.get("Object")
+details = model_output_dict.get("Details")
+
+
+block = details["Block"]
+shelf = details["Shelf"]
+level = details["Level"]
+product_name = details["ProductName"]
+price = details["Price"]
+stock = details["Stock"]
+unit = "kg"
+product_id = fake.uuid4()
+
+print(price)
+
+# TODO 
+# 根据账号识别用户权限
+
+authority = 0 # customer
+authority = 1 # administrator
+
 
 # 根据动作调用相应的函数
 if action == "find":
-    result = find_product(object_name)
+    result = find_product(product_name)
     print(result)
 
 
 elif action == "add":
-    pass
+
+
+    if authority == 0: 
+
+        confirm = send_message_to_administrator(block, shelf, level, product_name, price, unit, stock, product_id)
+        
+        if confirm == 1:
+            add_product(block, shelf, level, product_name, price, unit, stock, product_id)
+            print("Product added successfully.")
+
+        else:
+            print("You don't have permission to do this!!!!")
+            send_an_email_to_customer()
+
+
+    if authority == 1: 
+
+        add_product(block, shelf, level, product_name, price, unit, stock, product_id)
+        print("Product added successfully.")
+
+
 
 
 elif action == "delete":
-    pass
+    if authority == 1: 
+        delete_product_by_info(product_name, block, shelf, level)
+        print("Product deleted successfully.")
+
+    else:
+        print("You don't have permission to do this!!!!")
+        send_an_email_to_customer()
 
 
 elif action == "update":
-    pass
+    if authority == 1: 
+
+        if price != None:
+            update_product_price(product_name, block, shelf, level, price)
+            print("Price updated successfully.")
+
+        if stock != None:
+            update_product_stock(product_name, block, shelf, level, stock)
+            print("Stock updated successfully.")
+
+
+
+        # TODO
+
+        # conbination of delete & add
+
+        # if block != None:
+        #     update_product_location(product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level)
+
+
+
+    else:
+        print("You don't have permission to do this!!!!")
+        send_an_email_to_customer()
+
 
 
 
