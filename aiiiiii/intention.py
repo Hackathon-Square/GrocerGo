@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import openai
+import random
 
 
 openai.api_base = "https://api.zhiyungpt.com/v1"
@@ -11,7 +12,7 @@ def use_gpt(user_prompt):
 
     system_context = '''
 
-    Given a user's inquiry, identify the user's intent among the four basic operations: add, delete, update, and find. In addition to focusing on the key object mentioned in the inquiry, this system also extracts additional parameters related to the database schema including Block, Shelf, Level, ProductName, Price, and Stock. When information about these parameters is mentioned or implied in the inquiry, they should be included in the output. The output should be formatted as follows:
+    Given a user's inquiry, the system is designed to identify the user's intent among the four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When information about these parameters is mentioned or implied in the inquiry, they should be included in the output. The output format should strictly adhere to the following structure:
 
     {
     "Action": "The CRUD action the user wants to take",
@@ -81,12 +82,15 @@ def use_gpt(user_prompt):
 
     Now, based on the user's inquiry, analyze and output the result in the specified format, ensuring the object is in singular form and that any available details are also captured.
 
-
     '''
+
+
+    models = ["gpt-3.5-turbo", "gpt-4", "gpt-4-0125-preview"]
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4-0125-preview",
+            
+            model = random.choice(models),
             messages=[
                 {"role": "system", "content": system_context},
                 {"role": "user", "content": user_prompt},
@@ -101,6 +105,6 @@ def use_gpt(user_prompt):
 
 if __name__ == "__main__":
 
-    user_prompt = "where is the banana?"
+    user_prompt = "Update the price of oranges to $5 per kg."
     model_output = use_gpt(user_prompt)
     print(model_output)

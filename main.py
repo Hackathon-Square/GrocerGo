@@ -10,8 +10,10 @@ from faker import Faker
 fake = Faker()
 
 # user_query = "where is the banana?"
-user_query = "where is the apple?"
+# user_query = "where is the apple?"
 # user_query = "Add new types of apples to the inventory in Shelf 3 of Block E."
+# user_query = "Update the price of oranges to $5 per kg."
+user_query = "Add new types of apples to the inventory in Shelf 3 of Block A."
 
 model_output = use_gpt(user_query)
 
@@ -34,13 +36,22 @@ stock = details["Stock"]
 unit = "kg"
 product_id = fake.uuid4()
 
-print(price)
 
 # TODO 
 # 根据账号识别用户权限
 
-authority = 0 # customer
+
+# example
 authority = 1 # administrator
+authority = 0 # customer
+
+
+
+# TODO 
+# 根据账号识别所绑定邮箱
+
+# example
+user_email = "fdubob233@gmail.com"
 
 
 # 根据动作调用相应的函数
@@ -54,15 +65,19 @@ elif action == "add":
 
     if authority == 0: 
 
-        confirm = send_message_to_administrator(block, shelf, level, product_name, price, unit, stock, product_id)
+        confirm = send_message_and_wait_administrator_confirm(user_query, user_email)
         
         if confirm == 1:
+
+            # TODO 
+            # Does the administrator need to refine the details of the addition based on customer?
+
             add_product(block, shelf, level, product_name, price, unit, stock, product_id)
             print("Product added successfully.")
 
         else:
             print("You don't have permission to do this!!!!")
-            send_an_email_to_customer()
+            send_an_email_to_customer(user_query, user_email)
 
 
     if authority == 1: 
@@ -74,16 +89,20 @@ elif action == "add":
 
 
 elif action == "delete":
+
+
     if authority == 1: 
         delete_product_by_info(product_name, block, shelf, level)
         print("Product deleted successfully.")
 
     else:
         print("You don't have permission to do this!!!!")
-        send_an_email_to_customer()
+        send_an_email_to_customer(user_query, user_email)
 
 
 elif action == "update":
+
+
     if authority == 1: 
 
         if price != None:
@@ -107,7 +126,7 @@ elif action == "update":
 
     else:
         print("You don't have permission to do this!!!!")
-        send_an_email_to_customer()
+        send_an_email_to_customer(user_query, user_email)
 
 
 
