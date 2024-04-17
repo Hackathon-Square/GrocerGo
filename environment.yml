@@ -90,6 +90,7 @@ dependencies:
   - pthread-stubs=0.4=h27ca646_1001
   - pydantic=2.6.4=pyhd8ed1ab_0
   - pydantic-core=2.16.3=py311h94f323b_0
+  - pymysql=1.1.0=pyhd8ed1ab_0
   - pyparsing=3.1.2=pyhd8ed1ab_0
   - pysocks=1.7.1=pyha2e5f31_6
   - python=3.11.8=hdf0ec26_0_cpython
