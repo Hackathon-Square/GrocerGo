@@ -16,17 +16,16 @@
     }*/
 
     $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
-    //echo $password_hash;
     $name = $_POST["full_name"];
     $email = $_POST["email"];
 
-    $mysql = new mysqli("localhost", "root", "root", "User");
+    $mysql = new mysqli("localhost", "root", "", "User");
     if($mysql->connect_errno){
         die("Disconnection: ". $mysql->connect_error);
     }
 
     if(isset($_POST["reg"])){
-        $sql = "INSERT INTO UserData (name, email, password_hash) values ('$name', '$email', '$password_hash')";
+        $sql = "INSERT INTO UserData (Role, UserName, Email, Password_hash) values ('Customer', '$name', '$email', '$password_hash')";
         $mysql->query($sql);
 
         if($mysql ->affected_rows > 0){
