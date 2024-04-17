@@ -1,0 +1,79 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #ace0f9, #fba5d3);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  .registration-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 30px 20px;
+    text-align: center;
+  }
+  h2 {
+    margin: 0;
+    color: #333;
+    font-weight: 300;
+  }
+  .form-input {
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 60%;
+    border-radius: 20px;
+  }
+  .btn {
+    background: #56baed;
+    color: white;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+  }
+  .btn:hover {
+    background: #39ace7;
+  }
+  .registration-container a {
+    color: #cc2626;
+    text-decoration: none;
+    font-size: 12px;
+    display: inline-block;
+    margin-top: 20px;
+  }
+  
+</style>
+</head>
+<body>
+  <form action="register.php" method="post">
+    <div class="registration-container">
+      <h2>Create Account</h2>
+      <input type="text" class="form-input" placeholder="Full Name" name="full_name">
+      <input type="email" class="form-input" placeholder="Email Address" name="email">
+      <input type="password" class="form-input" placeholder="Password" name="password">
+      <button type="submit" class="btn" name="reg">Create Account</button>
+      <a href="login.html">Already have account? Log In</a>
+      
+      </a>
+      
+    </div>
+  </form>
+</body>
+</html>
