@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -19,7 +20,6 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   .search-container {
-    /* Reuse styles from your search page */
     display: flex;
     align-items: center;
     background: rgba(206, 196, 196, 0.7);
@@ -39,14 +39,12 @@
     outline: none;
   }
   .icon-button {
-    /* Reuse styles from your search page */
     border: none;
     background: rgba(139, 129, 129, 0.454);
     border-radius: 50px;
     cursor: pointer;
     padding: 10px;
     transition: transform 0.3s ease;
-    padding: 10px;
     margin: 0 5px;
     display: flex;
     align-items: center;
@@ -59,17 +57,13 @@
   .icon-button:hover {
     transform: scale(1.4);
   }
-
-
   .user-icon {
-    /* Adjust size as needed */
     width: 50px;
     height: 50px;
   }
   .user-icon img {
     width: 30px;
     height: 30px;
-  
     vertical-align:top;
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -78,7 +72,7 @@
     transform: scale(1.5);
   }
   .items-grid {
-    width :100%;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 3fr));
     gap: 20px;
@@ -100,7 +94,6 @@
     font-size: 0.8em;
     margin-bottom: 8px;
   }
-
   .item-icons img {
     width: 24px;
     height: 24px;
@@ -128,37 +121,46 @@
     </button>
     <button class="icon-button" title="Search">
       <img src="C:\SQUARE\ICON\search.jpg" alt="Search">
-      
     </button>
   </div>
-  
-   
-      <button class="user-icon" title="USER">
-        <a href="C:\SQUARE\PROFILE.HTML" class="user-icon" title="USER">
-          <img src="C:\SQUARE\ICON\USER.jpg" alt="USER">
-        </a>
-</div>
+  <button class="user-icon" title="USER">
+    <a href="C:\SQUARE\PROFILE.HTML" class="user-icon" title="USER">
+      <img src="C:\SQUARE\ICON\USER.jpg" alt="USER">
+    </a>
+  </button>
 </div>
 
 <div class="items-grid">
-  <!-- Repeat this item structure for each product -->
-  <!-- Begin of item -->
-  <div class="item">
-    <img src="C:\SQUARE\ICON\APPLE.jpg" alt="Product Image">
-    <div class="item-info">
-      <p>NAME | kg/g/ml</p>S
-      <p>PRICE</p>
-      <p>LOCATION</p>
-    </div>
-    <div class="item-icons">
-      <!-- Replace with your actual icon images -->
-      <img src="C:\SQUARE\ICON\location.jpg" alt="Location">
-      <img src="C:\SQUARE\ICON\LIKE.jpg" alt="Like">
-      <img src="C:\SQUARE\ICON\DISLIKE.jpg" alt="Dislike">
-    </div>
-   
-  <!-- End of item block -->
+  <!-- Products will be loaded dynamically here -->
 </div>
+
+<script>
+  window.onload = function() {
+      // 从 sessionStorage 获取产品数据
+      const products = JSON.parse(sessionStorage.getItem('products'));
+      if (products) {
+          displayProducts(products);
+      }
+  };
+  
+  function displayProducts(products) {
+      const container = document.querySelector('.items-grid');
+      container.innerHTML = ''; // 清空现有内容
+      products.forEach(product => {
+          const productHTML = `
+          <div class="item">
+              <img src="${product.image}" alt="Product Image">
+              <div class="item-info">
+                  <p>${product.ProductName} | ${product.Unit}</p>
+                  <p>${product.Price}</p>
+                  <p>Block: ${product.Block}, Shelf: ${product.Shelf}, Level: ${product.Level}</p>
+              </div>
+          </div>`;
+          container.innerHTML += productHTML;
+      });
+  }
+  </script>
+  
 
 </body>
 </html>
