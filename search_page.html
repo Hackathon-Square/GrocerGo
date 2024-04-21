@@ -99,7 +99,7 @@
         .then(data => {
             if (data.products && data.products.length > 0) {
                 sessionStorage.setItem('products', JSON.stringify(data.products));
-                window.location.href = 'page.html';  // 确保这个路径正确
+                window.location.href = '"C:\SQUARE\page.html"';  // 确保这个路径正确
             } else {
                 console.error('No products found:', data.error);
             }
@@ -110,14 +110,15 @@
     }
 });
 
-        
-        // 这里我们将搜索按钮的点击事件转换为 JavaScript 处理
-        document.getElementById('search-button').addEventListener('click', function() {
-            // 你可以在这里添加基于文本搜索的逻辑
-            // 例如，获取搜索框的内容并发起一个请求到后端搜索 API
-        });
-        </script>
-    
+     
+function performSearch() {
+    // 执行文本搜索
+    const query = document.getElementById('textInput').value;
+    if (query) {
+        window.location.href = `page.html?query=${encodeURIComponent(query)}`;
+    }
+}
+</script>
 
 </body>
 </html>
