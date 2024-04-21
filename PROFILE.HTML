@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User Profile</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
 <style>
   body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     background: #746a6a;
@@ -16,46 +17,54 @@
     height: 100vh;
   }
   .profile-container {
-    width: 600px;
+    width: 90%; /* Responsive width */
+    max-width: 600px;
     background: #fdfdfd;
     padding: 50px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     text-align: center;
+  }
+  .profile-info {
+    margin-bottom: 30px;
+  }
+  .profile-info h2, .profile-info p {
+    margin: 10px;
+    color: #333;
   }
   .profile-option {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
   }
   .profile-option img {
     width: 40px;
     height: 40px;
-    margin-right: 10px;
   }
-  .profile-option a {
+  .profile-option a, .logout-option {
     font-size: 18px;
     color: #333;
     text-decoration: none;
     transition: color 0.3s ease;
   }
-  .profile-option a:hover {
+  .profile-option a:hover, .logout-option:hover {
     color: #000;
   }
   .logout-option {
-    font-size: 18px;
     color: #e74c3c;
     cursor: pointer;
     transition: color 0.3s ease;
-  }
-  .logout-option:hover {
-    color: #c0392b;
   }
 </style>
 </head>
 <body>
 
 <div class="profile-container">
+  <div class="profile-info">
+    <h2>User Name</h2>
+    <p>Email: example@example.com</p>
+  </div>
   <div class="profile-option">
     <img src="C:\SQUARE\ICON\Home.jpg" alt="HOME">
     <a href="search_page.html">HOME</a>
@@ -64,22 +73,23 @@
     <img src="C:\SQUARE\ICON\Setting.jpg" alt="Settings">
     <a href="settings.html">SETTINGS</a>
   </div>
-  <div class="profile-option">
-    <img src="C:\SQUARE\ICON\Coupon.jpg" alt="Coupons">
-    <a href="coupons.html">COUPONS</a>
+  <div class="profile-option" >
+    <img src="C:\SQUARE\ICON\Email.jpg" alt="Send Email">
+    <a href="mailto:example@example.com">SEND MAIL</a>
   </div>
   <div class="profile-option" >
-    <img src="C:\SQUARE\ICON\Logout.jpg"alt="logout">
-    <a href="C:\SQUARE\Main.html">Log Out</a>
-    
+    <img src="C:\SQUARE\ICON\Giftcard.jpg" alt="Gift Card">
+    <a href="giftcards.html">GIFT CARDS</a>
+  </div>
+  <div class="profile-option" >
+    <img src="C:\SQUARE\ICON\Logout.jpg" alt="logout">
+    <a href="javascript:logout();">Log Out</a>
   </div>
 </div>
 
 <script>
   function logout() {
-    // Implement your logout logic here
-    // For example, redirect to a logout script or log out a user
-    window.location.href = 'logout.php'; // Or your logout process
+    window.location.href = 'logout.php';
   }
 </script>
 
