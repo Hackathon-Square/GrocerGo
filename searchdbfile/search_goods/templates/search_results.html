@@ -1,71 +1,183 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Search Results</title>
+    <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f4f4;
+    }
+    .search-container form{
+      /* Reuse styles from your search page */
+      display: flex;
+      align-items: center;
+      background: rgba(206, 196, 196, 0.7);
+      border-radius: 50px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .search-input {
+      flex: 1;
+      border: none;
+      padding: 10px;
+      margin-right: 10px;
+      font-size: 16px;
+      border-radius: 50px;
+    }
+
+    .search-input:focus {
+      outline: none;
+    }
+    .icon-button {
+      /* Reuse styles from your search page */
+      border: none;
+      background: rgba(139, 129, 129, 0.454);
+      border-radius: 50px;
+      cursor: pointer;
+      padding: 10px;
+      transition: transform 0.3s ease;
+      padding: 10px;
+      margin: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-button img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .icon-button:hover {
+      transform: scale(1.4);
+    }
+
+
+    .user-icon {
+      /* Adjust size as needed */
+      width: 50px;
+      height: 50px;
+    }
+    .user-icon img {
+      width: 30px;
+      height: 30px;
+
+      vertical-align: top;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .user-icon img:hover {
+      transform: scale(1.5);
+    }
+    .items-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 3fr));
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .item {
+      border: 1px solid #a58d8d;
+      padding: 10px;
+      background: #fdfbfb;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .item img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 8px;
+    }
+
+    .item-info {
+      font-size: 0.8em;
+      margin-bottom: 8px;
+    }
+
+    .item-icons img {
+      width: 24px;
+      height: 24px;
+      margin: 0 5px;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .item-icons img:hover {
+      transform: scale(1.5);
+    }
+
+    </style>
+
   </head>
   <body>
-    <div class="header">
-      <div class="logo">LOGO</div>
-      <div class="search-container">
-        <form action="{% url 'search_results' %}" method="get">
-          <input
-            type="text"
-            class="search-input"
-            id="searchBox"
-            name="query"
-            placeholder="Search"
-          />
-          <button
-            class="icon-button"
-            title="Voice Search"
-            type="button"
-            onclick="startDictation()"
-            id="startBtn"
-          >
-            <img
-              src="/Users/lyt1109/Downloads/Square-TT-UI/images/Voice.jpg"
-              alt="Voice"
-            />
-          </button>
-          <button class="icon-button" title="Image Search">
-            <img
-              src="/Users/lyt1109/Downloads/Square-TT-UI/images/Camera.jpg"
-              alt="Camera"
-            />
-          </button>
-
-          <button class="icon-button" type="submit" name="search">
-            <img
-              src="/Users/lyt1109/Downloads/Square-TT-UI/images/search.jpg"
-              alt="Search"
-            />
-          </button>
+   <div class="header">
+    <div class="logo">LOGO</div>
+    <div class="search-container">
+        <form action="{% url 'search_results' %}" method="get" style="flex-grow: 1;">
+            <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" />
+            <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+                <img src="{% static 'images/Voice.jpg' %}" alt="Voice" />
+            </button>
+            <button class="icon-button" type="submit">
+                <img src="{% static 'images/Search.jpg' %}" alt="Search" />
+            </button>
         </form>
-      </div>
-      <button class="user-icon" title="USER">
-      <a href="/Users/lyt1109/Downloads/Square-TT-UI/PROFILE.HTML" class="user-icon" title="USER">
-        <img src="/Users/lyt1109/Downloads/Square-TT-UI/images/USER.jpg" alt="USER">
-      </a>
+        <button class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click();">
+            <img src="{% static 'images/Camera.jpg' %}" alt="Camera" />
+        </button>
+        <form id="imageUploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data" style="display: none;">
+            {% csrf_token %}
+            <input type="file" name="image" accept="image/*" id="imageInput" onchange="uploadImage();">
+        </form>
     </div>
+</div>
     
-    
-    
-    
-    
+
     <h2>搜索结果: "{{ query }}"</h2>
-    {% if products %}
-    <ul>
-      {% for product in products %}
-      <li>
-        {{ product.ProductName }}: {{ product.level }}, {{ product.block }}, {{
-        product.shelf }}, ${{ product.price }}
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>未找到匹配的产品。</p>
-    {% endif %}
+{% if products %}
+  <div class="items-grid">
+    {% for product in products %}
+      <div class="item">
+        <img src="{% static 'images/pics/webp/'|add:product.product_name|add:'.webp' %}" alt="{{ product.product_name }}">
+        <div class="item-info">
+          <p>{{ product.product_name }}</p>
+          <p>${{ product.price|default_if_none:"N/A" }}</p>
+          {% if product.level or product.block or product.shelf %}
+            <p>
+              {% if product.level %}{{ product.level }}{% endif %}
+              {% if product.block %}{% if product.level %}, {% endif %}{{ product.block }}{% endif %}
+              {% if product.shelf %}{% if product.level or product.block %}, {% endif %}{{ product.shelf }}{% endif %}
+            </p>
+          {% endif %}
+        </div>
+        <div class="item-icons">
+          <img src="{% static 'images/location.jpg' %}" alt="Location">
+          <img src="{% static 'images/LIKE.jpg' %}" alt="Like">
+          <img src="{% static 'images/DISLIKE.jpg' %}" alt="Dislike">
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>未找到匹配的产品。</p>
+{% endif %}
+
 
     <script>
       function startDictation() {
@@ -90,6 +202,44 @@
           alert("Your browser does not support the Web Speech API");
         }
       }
+    function uploadImage() {
+    var form = document.getElementById('imageUploadForm');
+    var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', form.action, true);
+    xhr.setRequestHeader('X-CSRFToken', formData.get('csrfmiddlewaretoken'));  // 从表单获取并设置 CSRF token
+
+    xhr.onload = function() {
+        if (this.status == 200) {
+            var response = JSON.parse(this.response);
+            // 假设服务器返回的是产品信息
+            displayProductInfo(response);
+        } else {
+            console.error('Error uploading image:', this.statusText);
+        }
+    };
+
+    xhr.send(formData);
+}
+function displayProductInfo(product) {
+    var container = document.querySelector('.items-grid');
+    container.innerHTML = '';  // 清空现有内容
+
+    // 直接构建静态图片路径
+    const imageUrl = `/static/images/pics/webp/${product.product_name}.webp`;
+
+    const productHTML = `
+    <div class="item">
+        <img src="${imageUrl}" alt="${product.product_name}">
+        <div class="item-info">
+            <p>${product.product_name} | ${product.Unit}</p>
+            <p>${product.Price}</p>
+            <p>Block: ${product.Block}, Shelf: ${product.Shelf}, Level: ${product.Level}</p>
+        </div>
+    </div>`;
+    
+    container.innerHTML = productHTML;
+}
     </script>
   </body>
 </html>

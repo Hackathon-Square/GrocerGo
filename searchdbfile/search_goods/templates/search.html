@@ -1,5 +1,6 @@
 <!-- search.html -->
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -79,20 +80,20 @@
           id="startBtn"
         >
           <img
-            src="/Users/lyt1109/Downloads/Square-TT-UI/images/Voice.jpg"
+            src="{% static 'images/Voice.jpg' %}"
             alt="Voice"
           />
         </button>
         <button class="icon-button" title="Image Search">
           <img
-            src="/Users/lyt1109/Downloads/Square-TT-UI/images/Camera.jpg"
+            src="{% static 'images/Camera.jpg' %}"
             alt="Camera"
           />
         </button>
 
         <button class="icon-button" type="submit" name="search">
           <img
-            src="/Users/lyt1109/Downloads/Square-TT-UI/images/search.jpg"
+            src="{% static 'images/Search.jpg' %}"
             alt="Search"
           />
         </button>
