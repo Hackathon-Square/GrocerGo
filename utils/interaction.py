@@ -24,8 +24,8 @@ def send_an_email_to_customer(user_query, customer_email):
 
     smtp.sendmail(sender_email,[customer_email],message.as_string()) 
     smtp.close()
-
-    print("邮件已发送成功！")
+    
+    print("The email was successfully sent!")
 
 
 # TODO
