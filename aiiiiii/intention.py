@@ -11,8 +11,7 @@ openai.api_key = "sk-mMag0QVCTbog5iJmA7Cb5a3047Ee4f0d8b81D2477a5b61Da"
 def use_gpt(user_prompt):
 
     system_context = '''
-
-    Given a user's inquiry, the system is designed to identify the user's intent among the four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When information about these parameters is mentioned or implied in the inquiry, they should be included in the output. The output format should strictly adhere to the following structure:
+    Given a user's inquiry, the system is designed to identify the user's intent among the four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When multiple products are mentioned or implied in the inquiry, they should be listed under ProductName. The output format should strictly adhere to the following structure:
 
     {
     "Action": "The CRUD action the user wants to take",
@@ -20,7 +19,7 @@ def use_gpt(user_prompt):
         "Block": "The storage block, if specified",
         "Shelf": "The shelf number, if specified",
         "Level": "The level on the shelf, if specified",
-        "ProductName": "The name of the product, in singular form",
+        "ProductName": ["List of product names, in singular form"],
         "Price": "The price of the product, if specified",
         "Stock": "The stock quantity, if specified"
     }
@@ -35,7 +34,20 @@ def use_gpt(user_prompt):
         "Block": null,
         "Shelf": null,
         "Level": null,
-        "ProductName": "banana",
+        "ProductName": ["banana"],
+        "Price": null,
+        "Stock": null
+    }
+    }
+
+    Input: "Where are the tomatoes and eggs?"
+    Output: {
+    "Action": "find",
+    "Details": {
+        "Block": null,
+        "Shelf": null,
+        "Level": null,
+        "ProductName": ["tomato", "egg"],
         "Price": null,
         "Stock": null
     }
@@ -48,7 +60,7 @@ def use_gpt(user_prompt):
         "Block": "Block A",
         "Shelf": "3",
         "Level": null,
-        "ProductName": "apple",
+        "ProductName": ["apple"],
         "Price": null,
         "Stock": null
     }
@@ -61,8 +73,21 @@ def use_gpt(user_prompt):
         "Block": null,
         "Shelf": null,
         "Level": null,
-        "ProductName": "orange",
+        "ProductName": ["orange"],
         "Price": "5",
+        "Stock": null
+    }
+    }
+
+    Input: "I'd like scrambled eggs with tomatoes tonight."
+    Output: {
+    "Action": "find",
+    "Details": {
+        "Block": null,
+        "Shelf": null,
+        "Level": null,
+        "ProductName": ["egg", "tomato"],
+        "Price": null,
         "Stock": null
     }
     }
@@ -74,23 +99,19 @@ def use_gpt(user_prompt):
         "Block": null,
         "Shelf": "Shelf 4",
         "Level": "Level 2",
-        "ProductName": "pineapple",
+        "ProductName": ["pineapple"],
         "Price": null,
         "Stock": null
     }
     }
 
-    Now, based on the user's inquiry, analyze and output the result in the specified format, ensuring the object is in singular form and that any available details are also captured.
-
+    Now, based on the user's inquiry, analyze and output the result in the specified format, ensuring that product names are in singular form and that any available details are also captured.
     '''
-
-
-    models = ["gpt-3.5-turbo", "gpt-4", "gpt-4-0125-preview"]
 
     try:
         response = openai.ChatCompletion.create(
             
-            model = random.choice(models),
+            model = "gpt-4",
             messages=[
                 {"role": "system", "content": system_context},
                 {"role": "user", "content": user_prompt},
@@ -105,6 +126,6 @@ def use_gpt(user_prompt):
 
 if __name__ == "__main__":
 
-    user_prompt = "Update the price of oranges to $5 per kg."
+    user_prompt = "I'd like to buy apples and bananas tonight"
     model_output = use_gpt(user_prompt)
     print(model_output)

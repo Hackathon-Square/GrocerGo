@@ -13,7 +13,8 @@ fake = Faker()
 # user_query = "where is the apple?"
 # user_query = "Add new types of apples to the inventory in Shelf 3 of Block E."
 # user_query = "Update the price of oranges to $5 per kg."
-user_query = "Add new types of apples to the inventory in Shelf 3 of Block A."
+# user_query = "Add new types of apples to the inventory in Shelf 3 of Block A."
+user_query = "I'd like to buy apples and bananas tonight"
 
 model_output = use_gpt(user_query)
 
@@ -30,7 +31,8 @@ details = model_output_dict.get("Details")
 block = details["Block"]
 shelf = details["Shelf"]
 level = details["Level"]
-product_name = details["ProductName"]
+product_names = details["ProductName"]
+print(product_names)
 price = details["Price"]
 stock = details["Stock"]
 unit = "kg"
@@ -56,8 +58,10 @@ user_email = "fdubob233@gmail.com"
 
 # 根据动作调用相应的函数
 if action == "find":
-    result = find_product(product_name)
-    print(result)
+
+    for product_name in product_names:
+        result = find_product(product_name)
+        print(result)
 
 
 elif action == "add":
@@ -117,7 +121,7 @@ elif action == "update":
 
         # TODO
 
-        # conbination of delete & add
+        # it's combination of delete & add
 
         # if block != None:
         #     update_product_location(product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level)
