@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "search_goods"
-   
+
 ]
 
 MIDDLEWARE = [
@@ -78,13 +78,8 @@ WSGI_APPLICATION = "search_goods.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": 'django.db.backends.mysql',
-        "NAME": 'square',
-        'USER': 'root',
-        'PASSWORD': 'Lyt021005',
-        'HOST': 'localhost',
-        'PORT': '3306',
-
+        "ENGINE": 'django.db.backends.sqlite3',
+        "NAME": os.path.join("../../db", "market_database.db"),
     }
 }
 
