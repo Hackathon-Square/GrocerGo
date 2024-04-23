@@ -1,85 +1,133 @@
 <!-- search.html -->
 <!DOCTYPE html>
+{% load custom_filters %}
+{% load static %}
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Page</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f7f4f4;
+      }
+      .search-container form{
+        display: flex;
+        align-items: center;
+        background: rgba(206, 196, 196, 0.7);
+        border-radius: 50px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        margin-right: 10px;
+        font-size: 16px;
+        border-radius: 50px;
+      }
+      .search-input:focus {
+        outline: none;
+      }
+      .icon-button {
+        border: none;
+        background: rgba(139, 129, 129, 0.454);
+        border-radius: 50px;
+        cursor: pointer;
+        padding: 10px;
+        transition: transform 0.3s ease;
+        padding: 10px;
+        margin: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon-button img {
+        width: 30px;
+        height: 30px;
+        transition: filter 0.3s ease, transform 0.3s ease;
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+      }
+      .icon-button:hover {
+        transform: scale(1.4);
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search Page</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #f7f4f4;
+  <body>
+    <div class="search-container">
+    <form id="voiceSearchForm" action="{% url 'search_results' %}" method="get">
+      <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" required>
+      <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+        <img src="{% static 'images/Voice.jpg' %}" alt="Voice">
+      </button>
+      <button class="icon-button" type="submit">
+        <img src="{% static 'images/Search.jpg' %}" alt="Search">
+      </button>
+      <!-- Hidden image upload input -->
+      <input type="file" id="imageInput" style="display: none;" onchange="uploadImage()">
+      <button type="button" class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click()">
+        <img src="{% static 'images/Camera.jpg' %}" alt="Camera">
+      </button>
+      
+    </form>
+  </div>
+
+    <script>
+      function startDictation() {
+        if ("webkitSpeechRecognition" in window) {
+          var recognition = new webkitSpeechRecognition();
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.lang = "en-US";
+          recognition.start();
+
+          recognition.onresult = function (event) {
+            document.getElementById("searchBox").value =
+              event.results[0][0].transcript;
+            recognition.stop();
+          };
+
+          recognition.onerror = function (event) {
+            console.error("Speech recognition error:", event.error);
+            recognition.stop();
+          };
+        } else {
+          alert("Your browser does not support the Web Speech API");
+        }
+      }
+      function uploadImage() {
+      var fileInput = document.getElementById('imageInput');
+      var file = fileInput.files[0];
+      var formData = new FormData();
+      formData.append('image', file);
+
+      fetch('{% url "upload_image" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      }).then(response => response.json())
+        .then(data => {
+          if(data.error) {
+            alert(data.error);
+          } else {
+            // Assuming the backend redirects to the search results page with the product information
+            window.location.href = '{% url "search_results" %}?query=' + encodeURIComponent(data.ProductName);
+          }
+        }).catch(error => console.error('Error uploading image:', error));
     }
-
-    .search-container {
-      display: flex;
-      align-items: center;
-      background: rgba(206, 196, 196, 0.7);
-      border-radius: 50px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 10px 20px;
-
-    }
-
-    .search-input {
-      flex: 1;
-      border: none;
-      padding: 10px;
-      margin-right: 10px;
-      font-size: 16px;
-      border-radius: 50px;
-    }
-
-    .search-input:focus {
-      outline: none;
-    }
-
-    .icon-button {
-      border: none;
-      background: rgba(139, 129, 129, 0.454);
-      border-radius: 50px;
-      cursor: pointer;
-      padding: 10px;
-      transition: transform 0.3s ease;
-      padding: 10px;
-      margin: 0 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .icon-button img {
-      width: 30px;
-      height: 30px;
-      transition: filter 0.3s ease, transform 0.3s ease;
-      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
-
-    }
-
-    .icon-button:hover {
-      transform: scale(1.4);
-      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
-    }
-  </style>
-</head>
-
-<body>
-
-  <form action="{% url 'search_results' %}" method="get">
-    <input type="text" class="search-input" name="query" placeholder="Search">
-
-    <button class="icon-button" type="submit" name='search'>Search</button>
-  </form>
-
-
-
-</body>
-
+    </script>
+  </body>
 </html>
+
