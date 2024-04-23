@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #746a6a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .profile-container {
+    width: 600px;
+    background: #fdfdfd;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .profile-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .profile-option img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  .profile-option a {
+    font-size: 18px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .profile-option a:hover {
+    color: #000;
+  }
+  .logout-option {
+    font-size: 18px;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .logout-option:hover {
+    color: #c0392b;
+  }
+</style>
+</head>
+<body>
+
+<div class="profile-container">
+  <div class="profile-option">
+    <img src="{% static 'icons/Home.jpg' %}" alt="HOME">
+    <a href="{% url 'home' %}">HOME</a>
+  </div>
+  <div class="profile-option">
+    <img src="{% static 'icons/Setting.jpg' %}" alt="Settings">
+    <a href="{% url 'setting' %}">SETTINGS</a>
+  </div>
+  <div class="profile-option">
+    <img src="{% static 'icons/Coupon.jpg' %}" alt="Coupons">
+    <a href="{% url 'coupon' %}">COUPONS</a>
+  </div>
+  <div class="profile-option" >
+    <img src="{% static 'icons/Logout.jpg' %}" alt="logout">
+    <a class="logout-option" href="{% url 'logout' %}">LOGOUT</a>
+  </div>
+</div>
+
+</body>
+</html>
