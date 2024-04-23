@@ -10,51 +10,62 @@
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background: #746a6a;
+    background: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
-  .profile-container {
-    width: 90%; /* Responsive width */
-    max-width: 600px;
-    background: #fdfdfd;
-    padding: 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  .profile-container, .feedback-container {
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
   }
-  .profile-info {
-    margin-bottom: 30px;
+  .profile-info, .feedback-form {
+    margin-bottom: 20px;
   }
-  .profile-info h2, .profile-info p {
+  h2, p, label, button, a {
     margin: 10px;
     color: #333;
   }
-  .profile-option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  .profile-option img {
-    width: 40px;
-    height: 40px;
-  }
-  .profile-option a, .logout-option {
-    font-size: 18px;
-    color: #333;
+  a {
+    font-size: 16px;
+    color: #007BFF;
     text-decoration: none;
-    transition: color 0.3s ease;
+    display: block;
+    margin: 10px auto;
+    width: 80%;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
   }
-  .profile-option a:hover, .logout-option:hover {
-    color: #000;
+  a:hover {
+    background-color: #f8f9fa;
   }
   .logout-option {
-    color: #e74c3c;
+    color: #ff6347;
     cursor: pointer;
-    transition: color 0.3s ease;
+  }
+  input[type="text"], textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    width: 80%;
+    margin: auto;
   }
 </style>
 </head>
@@ -62,36 +73,41 @@
 
 <div class="profile-container">
   <div class="profile-info">
-    <h2>User Name</h2>
-    <p>Email: example@example.com</p>
+    <h2>User Profile</h2>
   </div>
-  <div class="profile-option">
-    <img src="C:\SQUARE\ICON\Home.jpg" alt="HOME">
-    <a href="search_page.html">HOME</a>
-  </div>
-  <div class="profile-option">
-    <img src="C:\SQUARE\ICON\Setting.jpg" alt="Settings">
-    <a href="settings.html">SETTINGS</a>
-  </div>
-  <div class="profile-option" >
-    <img src="C:\SQUARE\ICON\Email.jpg" alt="Send Email">
-    <a href="mailto:example@example.com">SEND MAIL</a>
-  </div>
-  <div class="profile-option" >
-    <img src="C:\SQUARE\ICON\Giftcard.jpg" alt="Gift Card">
-    <a href="giftcards.html">GIFT CARDS</a>
-  </div>
-  <div class="profile-option" >
-    <img src="C:\SQUARE\ICON\Logout.jpg" alt="logout">
-    <a href="javascript:logout();">Log Out</a>
-  </div>
+  <a href="search_page.html">HOME</a>
+  <a href="settings.html">SETTINGS</a>
+  <a href="javascript:showFeedbackForm();">FEEDBACK</a>
+  <a href="giftcards.html">GIFT CARDS</a>
+  <a href="javascript:logout();" class="logout-option">LOG OUT</a>
+</div>
+
+<div class="feedback-container" style="display:none;">
+  <h2>Feedback</h2>
+  <form class="feedback-form">
+    <label for="feedback">Share Your Feedback To Win a Gift Card!</label>
+    <textarea id="feedback" rows="4"></textarea>
+    <button type="button" onclick="submitFeedback()">Submit</button>
+  </form>
 </div>
 
 <script>
   function logout() {
     window.location.href = 'logout.php';
   }
+
+  function showFeedbackForm() {
+    document.querySelector('.feedback-container').style.display = 'block';
+    document.querySelector('.profile-container').style.display = 'none';
+  }
+
+  function submitFeedback() {
+    var feedback = document.getElementById('feedback').value;
+    alert('Feedback submitted: ' + feedback);
+    // Here you can add AJAX code to submit feedback to the server
+  }
 </script>
 
 </body>
 </html>
+
