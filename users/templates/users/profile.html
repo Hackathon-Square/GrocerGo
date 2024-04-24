@@ -60,7 +60,7 @@
 <div class="profile-container">
   <div class="profile-option">
     <img src="{% static 'icons/Home.jpg' %}" alt="HOME">
-    <a href="{% url 'home' %}">HOME</a>
+    <a href="{% url 'homepage' %}">HOME</a>
   </div>
   <div class="profile-option">
     <img src="{% static 'icons/Setting.jpg' %}" alt="Settings">
@@ -68,7 +68,7 @@
   </div>
   <div class="profile-option">
     <img src="{% static 'icons/Feedback.jpg' %}" alt="Feedback">
-    <a href="{% url 'feedback' %}">FEEDBACK</a>
+    <a href="javascript:showFeedbackForm();">FEEDBACK</a>
   </div>
   <div class="profile-option">
     <img src="{% static 'icons/Coupon.jpg' %}" alt="Coupons">
@@ -81,4 +81,17 @@
 </div>
 
 </body>
+
+<script>
+  function showFeedbackForm() {
+    document.querySelector('.feedback-container').style.display = 'block';
+    document.querySelector('.profile-container').style.display = 'none';
+  }
+
+  function submitFeedback() {
+    var feedback = document.getElementById('feedback').value;
+    alert('Feedback submitted: ' + feedback);
+    // Here you can add AJAX code to submit feedback to the server
+  }
+</script>
 </html>
