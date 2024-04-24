@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .forms import UserRegisterForm, LoginForm
+from .forms import UserRegisterForm, LoginForm, FeedbackForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import auth
@@ -60,11 +60,21 @@ def setting(request):
 
 
 def feedback(request):
-    pass
+    form = FeedbackForm()
+    if request.method == "POST":
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = request.POST["feedback"]
+            return redirect("home")
+        else:
+            ##TODO: feedback error not identified
+            messages.error(request, form.errors)
+
+    return render(request, "users/feedback.html", context={"form": form})
 
 
 def coupon(request):
-    pass
+    return render(request, "users/coupon.html")
 
 
 def my_logout(request):
