@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Search Results</title>
-    <style>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Search Results</title>
+  <style>
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
       background: #f7f4f4;
     }
-    .search-container form{
+
+    .search-container form {
       /* Reuse styles from your search page */
       display: flex;
       align-items: center;
@@ -20,6 +22,7 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 10px 20px;
     }
+
     .header {
       display: flex;
       justify-content: space-between;
@@ -28,6 +31,7 @@
       background: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
     .search-input {
       flex: 1;
       border: none;
@@ -40,6 +44,7 @@
     .search-input:focus {
       outline: none;
     }
+
     .icon-button {
       /* Reuse styles from your search page */
       border: none;
@@ -70,6 +75,7 @@
       width: 50px;
       height: 50px;
     }
+
     .user-icon img {
       width: 30px;
       height: 30px;
@@ -82,6 +88,7 @@
     .user-icon img:hover {
       transform: scale(1.5);
     }
+
     .items-grid {
       width: 100%;
       display: grid;
@@ -121,114 +128,120 @@
     .item-icons img:hover {
       transform: scale(1.5);
     }
+  </style>
 
-    </style>
+</head>
 
-  </head>
-  <body>
-   <div class="header">
+<body>
+  <div class="header">
     <div class="logo">LOGO</div>
     <div class="search-container">
-        <form action="{% url 'search_results' %}" method="get" style="flex-grow: 1;">
-            <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" />
-            <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
-                <img src="{% static 'icons/Voice.jpg' %}" alt="Voice" />
-            </button>
-            <button class="icon-button" type="submit">
-                <img src="{% static 'icons/Search.jpg' %}" alt="Search" />
-            </button>
-        </form>
-        <button class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click();">
-            <img src="{% static 'icons/Camera.jpg' %}" alt="Camera" />
+      <form action="{% url 'search_results' %}" method="get" style="flex-grow: 1;">
+        <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" />
+        <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+          <img src="{% static 'icons/Voice.jpg' %}" alt="Voice" />
         </button>
-        <form id="imageUploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data" style="display: none;">
-            {% csrf_token %}
-            <input type="file" name="image" accept="image/*" id="imageInput" onchange="uploadImage();">
-        </form>
+        <button class="icon-button" type="submit">
+          <img src="{% static 'icons/Search.jpg' %}" alt="Search" />
+        </button>
+        <button class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click();">
+          <img src="{% static 'icons/Camera.jpg' %}" alt="Camera" />
+        </button>
+      </form>
+      <button id="imageUploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data"
+        style="display: none;">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" id="imageInput" onchange="uploadImage();">
+      </button>
     </div>
-</div>
+    <button class="user-icon" title="USER">
+      <a href="{% url 'profile' %}" class="user-icon" title="USER">
+        <img src="{% static 'icons/User.jpg' %}" alt="USER">
+      </a>
+    </button>
+  </div>
 
 
-    <h2>搜索结果: "{{ query }}"</h2>
-{% if products %}
+  <h2>搜索结果: "{{ query }}"</h2>
+  {% if products %}
   <div class="items-grid">
     {% for product in products %}
-      <div class="item">
-        <img src="{% static 'products/webp/'|add:product.ProductName|add:'.webp' %}" alt="{{ product.ProductName }}">
-        <div class="item-info">
-          <p>{{ product.ProductName }}</p>
-          <p>${{ product.Price|default_if_none:"N/A" }}</p>
-          {% if product.Level or product.Block or product.Shelf %}
-            <p>
-              {% if product.Level %}{{ product.Level }}{% endif %}
-              {% if product.Block %}{% if product.Level %}, {% endif %}{{ product.Block }}{% endif %}
-              {% if product.Shelf %}{% if product.Level or product.Block %}, {% endif %}{{ product.Shelf }}{% endif %}
-            </p>
-          {% endif %}
-        </div>
-        <div class="item-icons">
-          <img src="{% static 'icons/Location.jpg' %}" alt="Location">
-          <img src="{% static 'icons/Like.jpg' %}" alt="Like">
-          <img src="{% static 'icons/Dislike.jpg' %}" alt="Dislike">
-        </div>
+    <div class="item">
+      <img src="{% static 'products/webp/'|add:product.ProductName|add:'.webp' %}" alt="{{ product.ProductName }}">
+      <div class="item-info">
+        <p>{{ product.ProductName }}</p>
+        <p>${{ product.Price|default_if_none:"N/A" }}</p>
+        {% if product.Level or product.Block or product.Shelf %}
+        <p>
+          {% if product.Level %}{{ product.Level }}{% endif %}
+          {% if product.Block %}{% if product.Level %}, {% endif %}{{ product.Block }}{% endif %}
+          {% if product.Shelf %}{% if product.Level or product.Block %}, {% endif %}{{ product.Shelf }}{% endif %}
+        </p>
+        {% endif %}
       </div>
+      <div class="item-icons">
+        <img src="{% static 'icons/Location.jpg' %}" alt="Location">
+        <img src="{% static 'icons/Like.jpg' %}" alt="Like">
+        <img src="{% static 'icons/Dislike.jpg' %}" alt="Dislike">
+      </div>
+    </div>
     {% endfor %}
   </div>
-{% else %}
+  {% else %}
   <p>未找到匹配的产品。</p>
-{% endif %}
+  {% endif %}
 
 
-    <script>
-      function startDictation() {
-        if ("webkitSpeechRecognition" in window) {
-          var recognition = new webkitSpeechRecognition();
-          recognition.continuous = false;
-          recognition.interimResults = false;
-          recognition.lang = "en-US";
-          recognition.start();
+  <script>
+    function startDictation() {
+      if ("webkitSpeechRecognition" in window) {
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
+        recognition.start();
 
-          recognition.onresult = function (event) {
-            document.getElementById("searchBox").value =
-              event.results[0][0].transcript;
-            recognition.stop();
-          };
+        recognition.onresult = function (event) {
+          document.getElementById("searchBox").value =
+            event.results[0][0].transcript;
+          recognition.stop();
+        };
 
-          recognition.onerror = function (event) {
-            console.error("Speech recognition error:", event.error);
-            recognition.stop();
-          };
-        } else {
-          alert("Your browser does not support the Web Speech API");
-        }
+        recognition.onerror = function (event) {
+          console.error("Speech recognition error:", event.error);
+          recognition.stop();
+        };
+      } else {
+        alert("Your browser does not support the Web Speech API");
       }
+    }
     function uploadImage() {
-    var form = document.getElementById('imageUploadForm');
-    var formData = new FormData(form);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', form.action, true);
-    xhr.setRequestHeader('X-CSRFToken', formData.get('csrfmiddlewaretoken'));  // 从表单获取并设置 CSRF token
+      var form = document.getElementById('imageUploadForm');
+      var formData = new FormData(form);
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', form.action, true);
+      xhr.setRequestHeader('X-CSRFToken', formData.get('csrfmiddlewaretoken'));  // 从表单获取并设置 CSRF token
 
-    xhr.onload = function() {
+      xhr.onload = function () {
         if (this.status == 200) {
-            var response = JSON.parse(this.response);
-            // 假设服务器返回的是产品信息
-            displayProductInfo(response);
+          var response = JSON.parse(this.response);
+          // 假设服务器返回的是产品信息
+          displayProductInfo(response);
         } else {
-            console.error('Error uploading image:', this.statusText);
+          console.error('Error uploading image:', this.statusText);
         }
-    };
+      };
 
-    xhr.send(formData);
-}
-function displayProductInfo(product) {
-    var container = document.querySelector('.items-grid');
-    container.innerHTML = '';  // 清空现有内容
+      xhr.send(formData);
+    }
+    function displayProductInfo(product) {
+      var container = document.querySelector('.items-grid');
+      container.innerHTML = '';  // 清空现有内容
 
-    // 直接构建静态图片路径
-    const imageUrl = `/static/images/pics/webp/${product.ProductName}.webp`;
+      // 直接构建静态图片路径
+      const imageUrl = `/static/images/pics/webp/${product.ProductName}.webp`;
 
-    const productHTML = `
+      const productHTML = `
     <div class="item">
         <img src="${imageUrl}" alt="${product.ProductName}">
         <div class="item-info">
@@ -238,8 +251,9 @@ function displayProductInfo(product) {
         </div>
     </div>`;
 
-    container.innerHTML = productHTML;
-}
-    </script>
-  </body>
+      container.innerHTML = productHTML;
+    }
+  </script>
+</body>
+
 </html>
