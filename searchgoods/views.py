@@ -6,18 +6,51 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from managegoods.models import Product
 from .forms import ImageUploadForm
+from django.db.models import Q
+
+from django.http import JsonResponse
+
+from .intention import use_gpt
+import json
 
 logger = logging.getLogger(__name__)
 
+
+def search(request):
+    return render(request, 'search.html')
+
+
 def search_results(request):
     query = request.GET.get('query', '')
-    products = Product.objects.filter(ProductName__icontains=query).distinct()
-    logger.debug(f"Products found: {products}")
-    logger.debug(f"Number of products found: {products.count()}")
+    model_output = use_gpt(query)
+    logger.debug(model_output)
+    try:
+        model_output_dict = json.loads(model_output)
+    except json.JSONDecodeError:
+        print("Error: model_output is not a valid JSON string.")
 
-    return render(request, 'searchgoods/search_results.html', {'products': products, 'query': query})
+    logger.debug(model_output_dict)
 
-from django.http import JsonResponse
+    # 提取动作和对象
+    action = model_output_dict.get("Action")
+    details = model_output_dict.get("Details")
+
+    product_names = details["ProductName"]
+
+    if action == "find":
+
+        query = Q()
+
+        for product_name in product_names:
+            query |= Q(ProductName__icontains=product_name)
+
+        products = Product.objects.filter(query).distinct()
+
+        logger.debug(f"Products found: {products}")
+        logger.debug(f"Number of products found: {products.count()}")
+
+        return render(request, 'searchgoods/search_results.html', {'products': products, 'query': product_names})
+
 
 def upload_image(request):
     if request.method == 'POST':
