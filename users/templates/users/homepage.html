@@ -1,180 +1,87 @@
+<!-- search.html -->
 <!DOCTYPE html>
+{% load custom_filters %}
 {% load static %}
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Page</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f7f4f4;
+      }
+      .search-container form{
+        display: flex;
+        align-items: center;
+        background: rgba(206, 196, 196, 0.7);
+        border-radius: 50px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        margin-right: 10px;
+        font-size: 16px;
+        border-radius: 50px;
+      }
+      .search-input:focus {
+        outline: none;
+      }
+      .icon-button {
+        border: none;
+        background: rgba(139, 129, 129, 0.454);
+        border-radius: 50px;
+        cursor: pointer;
+        padding: 10px;
+        transition: transform 0.3s ease;
+        padding: 10px;
+        margin: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon-button img {
+        width: 30px;
+        height: 30px;
+        transition: filter 0.3s ease, transform 0.3s ease;
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+      }
+      .icon-button:hover {
+        transform: scale(1.4);
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomePage</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f7f4f4;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .search-container {
-      /* Reuse styles from your search page */
-      display: flex;
-      align-items: center;
-      background: rgba(206, 196, 196, 0.7);
-      border-radius: 50px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 10px 20px;
-    }
-
-    .search-input {
-      flex: 1;
-      border: none;
-      padding: 10px;
-      margin-right: 10px;
-      font-size: 16px;
-      border-radius: 50px;
-    }
-
-    .search-input:focus {
-      outline: none;
-    }
-
-    .icon-button {
-      /* Reuse styles from your search page */
-      border: none;
-      background: rgba(139, 129, 129, 0.454);
-      border-radius: 50px;
-      cursor: pointer;
-      padding: 10px;
-      transition: transform 0.3s ease;
-      padding: 10px;
-      margin: 0 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .icon-button img {
-      width: 30px;
-      height: 30px;
-    }
-
-    .icon-button:hover {
-      transform: scale(1.4);
-    }
-
-    .user-icon {
-      /* Adjust size as needed */
-      width: 50px;
-      height: 50px;
-    }
-
-    .user-icon img {
-      width: 30px;
-      height: 30px;
-
-      vertical-align: top;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .user-icon img:hover {
-      transform: scale(1.5);
-    }
-
-    .items-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 3fr));
-      gap: 20px;
-      padding: 40px;
-    }
-
-    .item {
-      border: 1px solid #a58d8d;
-      padding: 10px;
-      background: #fdfbfb;
-      border-radius: 5px;
-      text-align: center;
-    }
-
-    .item img {
-      width: 100%;
-      height: auto;
-      margin-bottom: 8px;
-    }
-
-    .item-info {
-      font-size: 0.8em;
-      margin-bottom: 8px;
-    }
-
-    .item-icons img {
-      width: 24px;
-      height: 24px;
-      margin: 0 5px;
-      vertical-align: middle;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .item-icons img:hover {
-      transform: scale(1.5);
-    }
-  </style>
-</head>
-
-<body>
-  <div class="header">
-    <div class="logo">LOGO</div>
+  <body>
     <div class="search-container">
-      <form action="{% url 'search_results' %}" method="get">
-        <input type="text" class="search-input" placeholder="Search...">
-        <button class="icon-button" title="Voice Search">
-          <img src="{% static 'icons/Voice.jpg' %}" alt="Voice">
-        </button>
-        <button class="icon-button" title="Image Search">
-          <img src="{% static 'icons/Camera.jpg' %}" alt="Camera">
-        </button>
-        <button class="icon-button" title="Search">
-          <img src="{% static 'icons/Search.jpg' %}" alt="Search">
-        </button>
-      </form>
-    </div>
+    <form id="voiceSearchForm" action="{% url 'search_results' %}" method="get">
+      <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" required>
+      <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+        <img src="{% static 'icons/Voice.jpg' %}" alt="Voice">
+      </button>
+      <button class="icon-button" type="submit">
+        <img src="{% static 'icons/Search.jpg' %}" alt="Search">
+      </button>
+      <!-- Hidden image upload input -->
+      <input type="file" id="imageInput" style="display: none;" onchange="uploadImage()">
+      <button type="button" class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click()">
+        <img src="{% static 'icons/Camera.jpg' %}" alt="Camera">
+      </button>
 
-    <button class="user-icon" title="USER">
-      <a href="{% url 'profile' %}" class="user-icon" title="USER">
-        <img src="{% static 'icons/User.jpg' %}" alt="USER">
-      </a>
-  </div>
+    </form>
   </div>
 
-  <div class="items-grid">
-    <!-- Repeat this item structure for each product -->
-    <!-- Begin of item -->
-    <div class="item">
-      <img src="{% static 'icons/Apple.jpg' %}" alt="Product Image">
-      <div class="item-info">
-        <p>NAME | kg/g/ml</p>S
-        <p>PRICE</p>
-        <p>LOCATION</p>
-      </div>
-      <div class="item-icons">
-        <!-- Replace with your actual icon images -->
-        <img src="{% static 'icons/Location.jpg' %}" alt="Location">
-        <img src="{% static 'icons/Like.jpg' %}" alt="Like">
-        <img src="{% static 'icons/Dislike.jpg' %}" alt="Dislike">
-      </div>
-
-      <!-- End of item block -->
-    </div>
     <script>
       function startDictation() {
         if ("webkitSpeechRecognition" in window) {
@@ -198,7 +105,29 @@
           alert("Your browser does not support the Web Speech API");
         }
       }
-    </script>
-</body>
+      function uploadImage() {
+      var fileInput = document.getElementById('imageInput');
+      var file = fileInput.files[0];
+      var formData = new FormData();
+      formData.append('image', file);
 
+      fetch('{% url "upload_image" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      }).then(response => response.json())
+        .then(data => {
+          if(data.error) {
+            alert(data.error);
+          } else {
+            // Assuming the backend redirects to the search results page with the product information
+            window.location.href = '{% url "search_results" %}?query=' + encodeURIComponent(data.ProductName);
+          }
+        }).catch(error => console.error('Error uploading image:', error));
+    }
+    </script>
+  </body>
 </html>
+
