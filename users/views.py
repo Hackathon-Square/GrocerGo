@@ -10,7 +10,7 @@ from django.contrib import messages
 
 
 def homepage(request):
-    return render(request, "users/homepage.html")
+    return render(request, "users/search.html")
 
 
 @login_required(login_url="login")
