@@ -22,6 +22,10 @@ def search_results(request):
 
 from django.http import JsonResponse
 
+
+
+
+
 def upload_image(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
@@ -31,14 +35,16 @@ def upload_image(request):
             try:
                 product = Product.objects.get(product_name=product_name)
                 data = {
-                    "product_name": product.product_name,
+                    "ProductName": product.product_name,
                     "Block": product.block,
                     "Shelf": product.shelf,
                     "Level": product.level,
                     "Price": str(product.price),
-                    "Unit": product.unit,
+                    "Unit": product.unit,  # 确保这个字段存在
                 }
                 return JsonResponse(data)
             except Product.DoesNotExist:
                 return JsonResponse({"error": "Product not found"}, status=404)
-    return JsonResponse({"error": "Invalid form"}, status=400)
+        else:
+            return JsonResponse({"error": "Invalid form"}, status=400)
+    return JsonResponse({"error": "Invalid request"}, status=400)

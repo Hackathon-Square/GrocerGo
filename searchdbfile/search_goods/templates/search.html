@@ -1,5 +1,6 @@
 <!-- search.html -->
 <!DOCTYPE html>
+{% load custom_filters %}
 {% load static %}
 <html lang="en">
   <head>
@@ -17,7 +18,7 @@
         height: 100vh;
         background: #f7f4f4;
       }
-      .search-container form {
+      .search-container form{
         display: flex;
         align-items: center;
         background: rgba(206, 196, 196, 0.7);
@@ -64,41 +65,23 @@
 
   <body>
     <div class="search-container">
-      <form action="{% url 'search_results' %}" method="get">
-        <input
-          type="text"
-          class="search-input"
-          id="searchBox"
-          name="query"
-          placeholder="Search"
-        />
-        <button
-          class="icon-button"
-          title="Voice Search"
-          type="button"
-          onclick="startDictation()"
-          id="startBtn"
-        >
-          <img
-            src="{% static 'images/Voice.jpg' %}"
-            alt="Voice"
-          />
-        </button>
-        <button class="icon-button" title="Image Search">
-          <img
-            src="{% static 'images/Camera.jpg' %}"
-            alt="Camera"
-          />
-        </button>
+    <form id="voiceSearchForm" action="{% url 'search_results' %}" method="get">
+      <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" required>
+      <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+        <img src="{% static 'images/Voice.jpg' %}" alt="Voice">
+      </button>
+      <button class="icon-button" type="submit">
+        <img src="{% static 'images/Search.jpg' %}" alt="Search">
+      </button>
+      <!-- Hidden image upload input -->
+      <input type="file" id="imageInput" style="display: none;" onchange="uploadImage()">
+      <button type="button" class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click()">
+        <img src="{% static 'images/Camera.jpg' %}" alt="Camera">
+      </button>
+      
+    </form>
+  </div>
 
-        <button class="icon-button" type="submit" name="search">
-          <img
-            src="{% static 'images/Search.jpg' %}"
-            alt="Search"
-          />
-        </button>
-      </form>
-    </div>
     <script>
       function startDictation() {
         if ("webkitSpeechRecognition" in window) {
@@ -122,6 +105,29 @@
           alert("Your browser does not support the Web Speech API");
         }
       }
+      function uploadImage() {
+      var fileInput = document.getElementById('imageInput');
+      var file = fileInput.files[0];
+      var formData = new FormData();
+      formData.append('image', file);
+
+      fetch('{% url "upload_image" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      }).then(response => response.json())
+        .then(data => {
+          if(data.error) {
+            alert(data.error);
+          } else {
+            // Assuming the backend redirects to the search results page with the product information
+            window.location.href = '{% url "search_results" %}?query=' + encodeURIComponent(data.ProductName);
+          }
+        }).catch(error => console.error('Error uploading image:', error));
+    }
     </script>
   </body>
 </html>
+
