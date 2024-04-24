@@ -58,6 +58,10 @@ def setting(request):
     pass
 
 
+def feedback(request):
+    pass
+
+
 def coupon(request):
     pass
 
