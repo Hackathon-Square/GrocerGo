@@ -22,10 +22,14 @@ def register(request):
     form = UserRegisterForm()
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
+        print(form)
+        print(request.POST)
+        print(form.is_valid())
         if form.is_valid():
             form.save()
             return redirect("login")
         else:
+            print(form.errors)
             messages.error(request, form.errors)
 
     contxet = {"form": form}
