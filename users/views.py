@@ -70,7 +70,8 @@ def feedback(request):
         form = FeedbackForm(request.POST)
         if form.is_valid():
             feedback = request.POST["feedback"]
-            ## feedback as input into GPT
+            print(feedback)
+            # feedback as input into GPT
             result = use_gpt(feedback)
             process_gpt(result)
             return redirect("homepage")

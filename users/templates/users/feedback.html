@@ -64,11 +64,10 @@
         {% csrf_token %}
         <div class="feedback-container">
             <h2>Feedback</h2>
-
-            <div class="feedback-info">
-                {% render_field form.feedback type="text" class="form-input" id="exampleFeedback" name="feedback" %}
+            <div class="form-group">
+                {% render_field form.feedback type="feedback" class="form-input" id="exampleInputfeedback" name="feedback" %}
             </div>
-            <button type="submit" class="btn" name="feedback">Submit</button>
+            <button type="submit" class="btn" name="submit">Submit</button>
         </div>
     </form>
 </body>
