@@ -38,7 +38,7 @@ def give_gift_card_to_customer(customer_email):
 
     client = Client(access_token=os.environ["SQUARE_ACCESS_TOKEN"], environment="sandbox")
     result = create_gift_card(client)
-    result = activate_gift_card(client)
+    result = activate_gift_card(client, customer_email)
 
 
 async def send_message_and_wait_administrator_confirm(user_query, customer_email):
