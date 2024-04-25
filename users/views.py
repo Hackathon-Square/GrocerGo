@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 
 from .forms import UserRegisterForm, LoginForm, FeedbackForm
+from .models import User
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
@@ -48,8 +48,11 @@ def my_login(request):
             password = request.POST["password"]
             user = authenticate(username=username, password=password)
             if user is not None:
+                users = User.objects.get(username__contains=username)
                 request.session["is_login"] = "true"
                 request.session["username"] = username
+                request.session["email"] = users.email
+                request.session["is_staff"] = users.is_staff
                 login(request, user)
                 return redirect("homepage")
             else:
@@ -70,10 +73,10 @@ def feedback(request):
         form = FeedbackForm(request.POST)
         if form.is_valid():
             feedback = request.POST["feedback"]
-            print(feedback)
+            user_email = request.session["email"]
+            authority = request.session["is_staff"]
             # feedback as input into GPT
-            result = use_gpt(feedback)
-            process_gpt(result)
+            process_gpt(feedback, user_email, authority)
             return redirect("homepage")
         else:
             ##TODO: feedback error not identified
