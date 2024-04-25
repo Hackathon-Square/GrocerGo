@@ -1,0 +1,2 @@
+使用conda创建环境后还需要安装Square的API，可以使用以下命令安装：
+python -m pip install squareup
