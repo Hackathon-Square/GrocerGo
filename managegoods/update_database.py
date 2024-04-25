@@ -1,30 +1,30 @@
 import sqlite3
 
 def update_product_location(product_name, current_block, current_shelf, current_level, new_block, new_shelf, new_level):
-    conn = sqlite3.connect(path = "./db/market_database.db")
+    conn = sqlite3.connect(path = "./db.sqlite3")
     c = conn.cursor()
 
-    c.execute("UPDATE Products SET Block=?, Shelf=?, Level=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
+    c.execute("UPDATE managegoods_product SET Block=?, Shelf=?, Level=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
               (new_block, new_shelf, new_level, product_name, current_block, current_shelf, current_level))
     conn.commit()
 
     conn.close()
 
 def update_product_stock(product_name, block, shelf, level, new_stock):
-    conn = sqlite3.connect(path = "./db/market_database.db")
+    conn = sqlite3.connect(path = "./db.sqlite3")
     c = conn.cursor()
 
-    c.execute("UPDATE Products SET Stock=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
+    c.execute("UPDATE managegoods_product SET Stock=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
               (new_stock, product_name, block, shelf, level))
     conn.commit()
 
     conn.close()
 
 def update_product_price(product_name, block, shelf, level, new_price):
-    conn = sqlite3.connect(path = "./db/market_database.db")
+    conn = sqlite3.connect(path = "./db.sqlite3")
     c = conn.cursor()
 
-    c.execute("UPDATE Products SET Price=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
+    c.execute("UPDATE managegoods_product SET Price=? WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
               (new_price, product_name, block, shelf, level))
     conn.commit()
 

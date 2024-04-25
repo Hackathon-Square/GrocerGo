@@ -1,11 +1,11 @@
 import sqlite3
 
 def find_product(query):
-    path = "./db/market_database.db"
+    path = "./db.sqlite3"
     conn = sqlite3.connect(path)
     c = conn.cursor()
 
-    c.execute("SELECT * FROM Products WHERE ProductName LIKE ?", ('%' + query + '%',))
+    c.execute("SELECT * FROM managegoods_product WHERE ProductName LIKE ?", ('%' + query + '%',))
     products = c.fetchall()
 
     conn.close()

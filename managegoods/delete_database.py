@@ -4,7 +4,7 @@ def delete_product_by_info(product_name, block, shelf, level):
     conn = sqlite3.connect("./db.sqlite3")
     c = conn.cursor()
 
-    c.execute("DELETE FROM Products WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
+    c.execute("DELETE FROM managegoods_product WHERE ProductName=? AND Block=? AND Shelf=? AND Level=?",
               (product_name, block, shelf, level))
     conn.commit()
 
