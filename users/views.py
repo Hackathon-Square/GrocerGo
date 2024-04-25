@@ -45,8 +45,10 @@ def my_login(request):
             password = request.POST["password"]
             user = authenticate(username=username, password=password)
             if user is not None:
+                request.session['is_login']='true'
+                request.session['username']=username
                 login(request, user)
-                return redirect("home")
+                return redirect("homepage")
             else:
                 return redirect("login")
 
