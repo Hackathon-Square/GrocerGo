@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 
+from .intention import use_gpt
+from .process import process_gpt
+
 
 def homepage(request):
     return render(request, "users/homepage.html")
@@ -45,8 +48,8 @@ def my_login(request):
             password = request.POST["password"]
             user = authenticate(username=username, password=password)
             if user is not None:
-                request.session['is_login']='true'
-                request.session['username']=username
+                request.session["is_login"] = "true"
+                request.session["username"] = username
                 login(request, user)
                 return redirect("homepage")
             else:
@@ -67,11 +70,12 @@ def feedback(request):
         form = FeedbackForm(request.POST)
         if form.is_valid():
             feedback = request.POST["feedback"]
-            print(feedback)
+            ## feedback as input into GPT
+            result = use_gpt(feedback)
+            process_gpt(result)
             return redirect("homepage")
         else:
             ##TODO: feedback error not identified
-            print(form.errors)
             messages.error(request, form.errors)
 
     return render(request, "users/feedback.html", context={"form": form})
