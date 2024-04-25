@@ -67,9 +67,11 @@ def feedback(request):
         form = FeedbackForm(request.POST)
         if form.is_valid():
             feedback = request.POST["feedback"]
-            return redirect("home")
+            print(feedback)
+            return redirect("homepage")
         else:
             ##TODO: feedback error not identified
+            print(form.errors)
             messages.error(request, form.errors)
 
     return render(request, "users/feedback.html", context={"form": form})
