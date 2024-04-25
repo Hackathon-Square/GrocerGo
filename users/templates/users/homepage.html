@@ -1,4 +1,3 @@
-<!-- search.html -->
 <!DOCTYPE html>
 {% load custom_filters %}
 {% load static %}
@@ -17,8 +16,9 @@
         align-items: center;
         height: 100vh;
         background: #f7f4f4;
+        position: relative; /* Added for absolute positioning of profile button */
       }
-      .search-container form{
+      .search-container form {
         display: flex;
         align-items: center;
         background: rgba(206, 196, 196, 0.7);
@@ -60,26 +60,42 @@
         transform: scale(1.4);
         filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
       }
+      .profile-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        border: none;
+        background-color: #8b8181;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .profile-button:hover {
+        background-color: #6e6363;
+      }
     </style>
   </head>
-
   <body>
+    <a href="{% url 'profile' %}"><button class="profile-button">Profile</button></a>
     <div class="search-container">
-    <form id="voiceSearchForm" action="{% url 'search_results' %}" method="get">
-      <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" required>
-      <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
-        <img src="{% static 'icons/Voice.jpg' %}" alt="Voice">
-      </button>
-      <button class="icon-button" type="submit">
-        <img src="{% static 'icons/Search.jpg' %}" alt="Search">
-      </button>
-      <!-- Hidden image upload input -->
-      <input type="file" id="imageInput" style="display: none;" onchange="uploadImage()">
-      <button type="button" class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click()">
-        <img src="{% static 'icons/Camera.jpg' %}" alt="Camera">
-      </button>
-    </form>
-  </div>
+      <form id="voiceSearchForm" action="{% url 'search_results' %}" method="get">
+        <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" required>
+        <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+          <img src="{% static 'icons/Voice.jpg' %}" alt="Voice">
+        </button>
+        <button class="icon-button" type="submit">
+          <img src="{% static 'icons/Search.jpg' %}" alt="Search">
+        </button>
+        <!-- Hidden image upload input -->
+        <input type="file" id="imageInput" style="display: none;" onchange="uploadImage()">
+        <button type="button" class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click()">
+          <img src="{% static 'icons/Camera.jpg' %}" alt="Camera">
+        </button>
+      </form>
+    </div>
 
     <script>
       function startDictation() {
@@ -129,4 +145,3 @@
     </script>
   </body>
 </html>
-
