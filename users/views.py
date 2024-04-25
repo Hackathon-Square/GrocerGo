@@ -86,7 +86,9 @@ def feedback(request):
 
 
 def coupon(request):
-    return render(request, "users/coupon.html")
+    username = request.session["username"]
+    user = User.objects.get(username=username)
+    return render(request, "users/coupon.html", {"user": user})
 
 
 def my_logout(request):
