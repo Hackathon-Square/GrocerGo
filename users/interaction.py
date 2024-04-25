@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 import os
 from square.client import Client
 
-from giftcards import create_gift_card, activate_gift_card
+from .giftcards import create_gift_card, activate_gift_card
 
 # 发件人信息
 sender_email = "square_bob@163.com"
