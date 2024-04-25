@@ -1,7 +1,7 @@
- 
-import smtplib 
+
+import smtplib
 import asyncio
-from email.mime.text import MIMEText 
+from email.mime.text import MIMEText
 
 
 # 发件人信息
@@ -12,8 +12,8 @@ password = "URINSGYNAPANROVB"
 
 def send_an_email_to_customer(user_query, customer_email):
 
-    smtp = smtplib.SMTP_SSL("smtp.163.com", 994) 
-    smtp.login(sender_email,password) 
+    smtp = smtplib.SMTP_SSL("smtp.163.com", 994)
+    smtp.login(sender_email,password)
 
     # 邮件正文
     message = MIMEText("You don't have permission to do this!😭😭😭\n" + user_query + "\nThis is an automated email." + "\nDo not reply!", "plain", "utf-8")
@@ -22,9 +22,9 @@ def send_an_email_to_customer(user_query, customer_email):
     message["From"] = sender_email
     message["To"] = customer_email
 
-    smtp.sendmail(sender_email,[customer_email],message.as_string()) 
+    smtp.sendmail(sender_email,[customer_email],message.as_string())
     smtp.close()
-    
+
     print("The email was successfully sent!")
 
 
@@ -42,22 +42,22 @@ async def send_message_and_wait_administrator_confirm(user_query, customer_email
 
     # Simulating sending message
     print(f"Sending user query: {user_query} to administrator...")
-    await asyncio.sleep(2)  
+    await asyncio.sleep(2)
 
     # Simulating wait for confirmation
     print("Waiting for administrator confirmation...")
-    await asyncio.sleep(3) 
+    await asyncio.sleep(3)
 
-    administrator_confirmed = False  
+    administrator_confirmed = False
 
     if administrator_confirmed:
 
         give_gift_card_to_customer(customer_email)
 
-        return 1 
-    
+        return 1
+
     else:
-        return 0  
+        return 0
 
 
 

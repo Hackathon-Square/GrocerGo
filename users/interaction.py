@@ -3,6 +3,10 @@ import smtplib
 import asyncio
 from email.mime.text import MIMEText
 
+import os
+from square.client import Client
+
+from giftcards import create_gift_card, activate_gift_card
 
 # 发件人信息
 sender_email = "square_bob@163.com"
@@ -32,10 +36,9 @@ def send_an_email_to_customer(user_query, customer_email):
 
 def give_gift_card_to_customer(customer_email):
 
-
-    # square gift card api()
-
-    pass
+    client = Client(access_token=os.environ["SQUARE_ACCESS_TOKEN"], environment="sandbox")
+    result = create_gift_card(client)
+    result = activate_gift_card(client)
 
 
 async def send_message_and_wait_administrator_confirm(user_query, customer_email):

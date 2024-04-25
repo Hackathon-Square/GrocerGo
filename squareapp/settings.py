@@ -53,7 +53,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "square.urls"
+ROOT_URLCONF = "squareapp.urls"
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "square.wsgi.application"
+WSGI_APPLICATION = "squareapp.wsgi.application"
 
 
 # Database
