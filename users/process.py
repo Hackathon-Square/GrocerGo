@@ -17,6 +17,7 @@ def process_gpt(user_query, user_email, authority):
         print("Error: model_output is not a valid JSON string.")
 
     # 提取动作和对象
+    print("-------------------------------")
     action = model_output_dict.get("Action")
     details = model_output_dict.get("Details")
 

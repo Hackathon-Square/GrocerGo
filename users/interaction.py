@@ -32,8 +32,6 @@ def send_an_email_to_customer(user_query, customer_email):
     print("The email was successfully sent!")
 
 
-# TODO
-
 def give_gift_card_to_customer(customer_email):
 
     client = Client(access_token=os.environ["SQUARE_ACCESS_TOKEN"], environment="production")
