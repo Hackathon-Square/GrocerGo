@@ -2,15 +2,15 @@ import json
 from .models import User
 
 
-def activate_gift_card(client, customer_email):
+def activate_gift_card(client, customer_email, result):
     result = client.gift_card_activities.create_gift_card_activity(
         body={
             "idempotency_key": "001",
             "gift_card_activity": {
                 "type": "ACTIVATE",
                 "location_id": "LGM75327C41RJ",
-                "gift_card_id": "gftc:2bcda6a90d524a6db268bbd72c82966a",
-                "gift_card_gan": "7783324663378794",
+                "gift_card_id": result["body"]["gift_card"]["id"],
+                "gift_card_gan": result["body"]["gift_card"]["gan"],
                 "activate_activity_details": {
                     "amount_money": {"amount": 20, "currency": "AUD"},
                     "buyer_payment_instrument_ids": ["first"],
@@ -39,7 +39,6 @@ def create_gift_card(client):
             "gift_card": {
                 "type": "DIGITAL",
                 "gan_source": "SQUARE",
-                "gan": "giftcard001",
             },
         }
     )
