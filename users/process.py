@@ -24,9 +24,15 @@ def process_gpt(user_query, user_email, authority):
     level = details["Level"]
     product_names = details["ProductName"]
     price = details["Price"]
+    if price is None:
+        price = fake.random_number(digits=2)
     stock = details["Stock"]
+    if stock is None:
+        stock = fake.random_number(digits=2)
     unit = "kg"
     product_id = fake.uuid4()
+    print("========================")
+    print(details)
 
     if action == "find":
 

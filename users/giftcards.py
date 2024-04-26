@@ -21,7 +21,7 @@ def activate_gift_card(client, customer_email, result):
 
     result = result.body
     user = User.objects.get(email=customer_email)
-    giftcardids = user.giftcardids
+    giftcardids = json.loads(user.giftcardids)
     ids = giftcardids.get("ids", [])
     ids.append(result["gift_card_activity"]["gift_card_id"])
     giftcardids["ids"] = ids
