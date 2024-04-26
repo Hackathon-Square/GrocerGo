@@ -7,7 +7,7 @@ def add_product(block, shelf, level, product_name, price, unit, stock, product_i
     conn = sqlite3.connect("./db.sqlite3")
     c = conn.cursor()
 
-    c.execute("INSERT INTO Products (Block, Shelf, Level, ProductName, Price, Unit, Stock, ProductID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    c.execute("INSERT INTO managegoods_product (Block, Shelf, Level, ProductName, Price, Unit, Stock, ProductID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
               (block, shelf, level, product_name, price, unit, stock, product_id))
     conn.commit()
 
