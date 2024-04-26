@@ -12,7 +12,7 @@ class Product(models.Model):
     Unit = models.CharField(max_length=100)
     Stock = models.DecimalField(max_digits=10, decimal_places=2)
     ProductID = models.TextField()
-    ProductPicPath = models.CharField(max_length=255)
+    ProductPicPath = models.CharField(max_length=255, default="", null=True)
 
     def __str__(self):
         return self.ProductName
