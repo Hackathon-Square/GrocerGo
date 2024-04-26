@@ -1,108 +1,115 @@
 # -*- coding:utf-8 -*-
 
 import openai
-import random
 
 
-openai.api_base = "https://api.chatgpt-4.net.cn/v1"
-openai.api_key = "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"
+# openai.api_base = "https://api.chatgpt-4.net.cn/v1"
+# openai.api_key = "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"
+
+
+openai.api_base = "https://api.zhiyungpt.com/v1"
+openai.api_key = "sk-mMag0QVCTbog5iJmA7Cb5a3047Ee4f0d8b81D2477a5b61Da"
 
 
 def use_gpt(user_prompt):
 
     system_context = '''
-    Given a user's inquiry, the system is designed to identify the user's intent among the four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When multiple products are mentioned or implied in the inquiry, they should be listed under ProductName. The output format should strictly adhere to the following structure:
+    Given a user's inquiry, the system is designed to discern the user's intent among four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When multiple products are mentioned or implied in the inquiry, they should be listed under ProductName.
+
+    Additionally, the system must be capable of identifying and responding to implicit or explicit reports of database inconsistencies or errors. In cases where a user points out a discrepancy or an error in the database (such as locating an item in a different block than what is registered), the response should classify the action as "update" and solicit further details to correct the database.
+
+    The output format should strictly adhere to the following structure:
 
     {
-    "Action": "The CRUD action the user wants to take",
-    "Details": {
-        "Block": "The storage block, if specified",
-        "Shelf": "The shelf number, if specified",
-        "Level": "The level on the shelf, if specified",
-        "ProductName": ["List of product names, in singular form"],
-        "Price": "The price of the product, if specified",
-        "Stock": "The stock quantity, if specified"
-    }
+        "Action": "The CRUD action the user wants to take",
+        "Details": {
+            "Block": "The storage block, if specified",
+            "Shelf": "The shelf number, if specified",
+            "Level": "The level on the shelf, if specified",
+            "ProductName": ["List of product names, in singular form"],
+            "Price": "The price of the product, if specified",
+            "Stock": "The stock quantity, if specified"
+        }
     }
 
     Examples:
 
     Input: "Where can I find bananas?"
     Output: {
-    "Action": "find",
-    "Details": {
-        "Block": null,
-        "Shelf": null,
-        "Level": null,
-        "ProductName": ["banana"],
-        "Price": null,
-        "Stock": null
-    }
+        "Action": "find",
+        "Details": {
+            "Block": null,
+            "Shelf": null,
+            "Level": null,
+            "ProductName": ["banana"],
+            "Price": null,
+            "Stock": null
+        }
     }
 
-    Input: "Where are the tomatoes and eggs?"
+    Input: "I find apples in block B but your database shows it in A block."
     Output: {
-    "Action": "find",
-    "Details": {
-        "Block": null,
-        "Shelf": null,
-        "Level": null,
-        "ProductName": ["tomato", "egg"],
-        "Price": null,
-        "Stock": null
-    }
+        "Action": "update",
+        "Details": {
+            "Block": "B",
+            "Shelf": null,
+            "Level": null,
+            "ProductName": ["apple"],
+            "Price": null,
+            "Stock": null
+        }
     }
 
     Input: "Add new types of apples to the inventory in Shelf 3 of Block A."
     Output: {
-    "Action": "add",
-    "Details": {
-        "Block": "Block A",
-        "Shelf": "3",
-        "Level": null,
-        "ProductName": ["apple"],
-        "Price": null,
-        "Stock": null
-    }
+        "Action": "add",
+        "Details": {
+            "Block": "Block A",
+            "Shelf": "3",
+            "Level": null,
+            "ProductName": ["apple"],
+            "Price": null,
+            "Stock": null
+        }
     }
 
     Input: "Update the price of oranges to $5 per kg."
     Output: {
-    "Action": "update",
-    "Details": {
-        "Block": null,
-        "Shelf": null,
-        "Level": null,
-        "ProductName": ["orange"],
-        "Price": "5",
-        "Stock": null
-    }
+        "Action": "update",
+        "Details": {
+            "Block": null,
+            "Shelf": null,
+            "Level": null,
+            "ProductName": ["orange"],
+            "Price": "5",
+            "Stock": null
+        }
     }
 
     Input: "I'd like scrambled eggs with tomatoes tonight."
     Output: {
-    "Action": "find",
-    "Details": {
-        "Block": null,
-        "Shelf": null,
-        "Level": null,
-        "ProductName": ["egg", "tomato"],
-        "Price": null,
-        "Stock": null
-    }
+        "Action": "find",
+        "Details": {
+            "Block": null,
+            "Shelf": null,
+            "Level": null,
+            "ProductName": ["egg", "tomato"],
+            "Price": null,
+            "Stock": null
+        }
     }
 
     Input: "Delete the expired pineapples from the stock in Level 2 of Shelf 4."
     Output: {
-    "Action": "delete",
-    "Details": {
-        "Block": null,
-        "Shelf": "Shelf 4",
-        "Level": "Level 2",
-        "ProductName": ["pineapple"],
-        "Price": null,
-        "Stock": null
-    }
+        "Action": "delete",
+        "Details": {
+            "Block": null,
+            "Shelf": "Shelf 4",
+            "Level": "Level 2",
+            "ProductName": ["pineapple"],
+            "Price": null,
+            "Stock": null
+        }
     }
 
     Now, based on the user's inquiry, analyze and output the result in the specified format, ensuring that product names are in singular form and that any available details are also captured.
@@ -126,6 +133,6 @@ def use_gpt(user_prompt):
 
 if __name__ == "__main__":
 
-    user_prompt = "I'd like to buy apples tonight"
+    user_prompt = "I find apples in block B but your database shows it in A block."
     model_output = use_gpt(user_prompt)
     print(model_output)
