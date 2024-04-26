@@ -2,6 +2,7 @@
 import smtplib
 import asyncio
 from email.mime.text import MIMEText
+from time import sleep
 
 import os
 from square.client import Client
@@ -39,17 +40,17 @@ def give_gift_card_to_customer(customer_email):
     result = activate_gift_card(client, customer_email, result)
 
 
-async def send_message_and_wait_administrator_confirm(user_query, customer_email):
+def send_message_and_wait_administrator_confirm(user_query, customer_email):
 
     # Simulating sending message
     print(f"Sending user query: {user_query} to administrator...")
-    await asyncio.sleep(2)
+    sleep(2)
 
     # Simulating wait for confirmation
     print("Waiting for administrator confirmation...")
-    await asyncio.sleep(3)
+    sleep(3)
 
-    administrator_confirmed = False
+    administrator_confirmed = True
 
     if administrator_confirmed:
 
