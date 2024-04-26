@@ -1,7 +1,7 @@
 import os
 from square.client import Client
 
-client = Client(access_token=os.environ["SQUARE_ACCESS_TOKEN"], environment="sandbox")
+client = Client(access_token=os.environ["SQUARE_ACCESS_TOKEN"], environment="production")
 
 result = client.gift_card_activities.create_gift_card_activity(
     body={
