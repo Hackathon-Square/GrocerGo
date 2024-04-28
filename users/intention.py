@@ -5,7 +5,6 @@ import openai
 openai.api_base = "https://api.zhiyungpt.com/v1"
 openai.api_key = "sk-mMag0QVCTbog5iJmA7Cb5a3047Ee4f0d8b81D2477a5b61Da"
 
-
 def use_gpt(user_prompt):
 
     system_context = '''
