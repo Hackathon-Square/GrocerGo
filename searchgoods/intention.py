@@ -5,13 +5,13 @@ import random
 
 
 openai.api_base = "https://api.chatgpt-4.net.cn/v1"
-openai.api_key = "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"
+openai.api_key = "sk-proj-G179W2H9MskoCXNhIHqWT3BlbkFJR8cCPnO6ZnbQ5W1mlM6Q"
 
 
 def use_gpt(user_prompt):
 
     system_context = '''
-    Given a user's inquiry, the system is designed to discern the user's intent among four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When multiple products are mentioned or implied in the inquiry, they should be listed under ProductName. 
+    Given a user's inquiry, the system is designed to discern the user's intent among four basic operations: add, delete, update, and find. The system extracts key parameters related to the database schema, including Block, Shelf, Level, ProductName, Price, and Stock. These parameters are crucial for accurately understanding and fulfilling the user's request. When multiple products are mentioned or implied in the inquiry, they should be listed under ProductName.
 
     Additionally, the system must be capable of identifying and responding to implicit or explicit reports of database inconsistencies or errors. In cases where a user points out a discrepancy or an error in the database (such as locating an item in a different block than what is registered), the response should classify the action as "update" and solicit further details to correct the database.
 
