@@ -23,3 +23,7 @@ class LoginForm(AuthenticationForm):
 
 class FeedbackForm(Form):
     feedback = forms.CharField(widget=Textarea())
+
+
+class ImageUploadForm(forms.Form):
+    image = forms.ImageField(label="Select a file")

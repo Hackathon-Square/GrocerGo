@@ -1,12 +1,11 @@
 from django.urls import path
 from . import views
-from .views import upload_image  # make sure to import your view function
 
 urlpatterns = [
     path('search/', views.search, name='search'),
     path('results/', views.search_results, name='search_results'),
     #path('', lambda request: redirect('search_results')),
-    path('upload-image/', upload_image, name='upload_image')
+    path('search_upload_image/', views.search_upload_image, name='search_upload_image')
 ]
 
 

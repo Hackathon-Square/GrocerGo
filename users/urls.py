@@ -11,4 +11,5 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("", views.my_login, name="login"),
     path("logout/", views.my_logout, name="logout"),
+    path("homepage_upload_image", views.homepage_upload_image, name="homepage_upload_image")
 ]

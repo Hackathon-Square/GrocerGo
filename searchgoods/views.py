@@ -52,10 +52,13 @@ def search_results(request):
         return render(request, 'searchgoods/search_results.html', {'products': products, 'query': product_names})
 
 
-def upload_image(request):
+def search_upload_image(request):
+    print("==========SEARCH UPLOAD IMAGE==========")
+
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
+            print("==========SEARCH UPLOAD IMAGE==========")
             image = request.FILES['image']
             product_name = image.name.rsplit('.', 1)[0]
             try:

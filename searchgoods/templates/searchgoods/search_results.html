@@ -13,10 +13,11 @@
       background: #f7f4f4;
     }
 
-    .search-container form {
+    .search-container {
       /* Reuse styles from your search page */
       display: flex;
       align-items: center;
+      justify-content: space-between;
       background: rgba(206, 196, 196, 0.7);
       border-radius: 50px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -41,8 +42,17 @@
       border-radius: 50px;
     }
 
+    .form-buttons {
+      display: flex;
+      align-items: center;
+    }
+
     .search-input:focus {
       outline: none;
+    }
+
+    #imageUploadForm {
+      display: none;
     }
 
     .icon-button {
@@ -128,6 +138,10 @@
     .item-icons img:hover {
       transform: scale(1.5);
     }
+
+    h2 {
+      margin: 30px 40px
+    }
   </style>
 
 </head>
@@ -136,24 +150,26 @@
   <div class="header">
     <div class="logo">LOGO</div>
     <div class="search-container">
-      <form action="{% url 'search_results' %}" method="get" style="flex-grow: 1;">
+      <form action="{% url 'search_results' %}" method="get" style="display: flex; align-items: center; flex-grow: 1;">
         <input type="text" class="search-input" id="searchBox" name="query" placeholder="Search" />
-        <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
-          <img src="{% static 'icons/Voice.jpg' %}" alt="Voice" />
-        </button>
-        <button class="icon-button" type="submit">
-          <img src="{% static 'icons/Search.jpg' %}" alt="Search" />
-        </button>
-        <button class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click();">
-          <img src="{% static 'icons/Camera.jpg' %}" alt="Camera" />
-        </button>
+        <div class="form-buttons">
+          <button class="icon-button" title="Voice Search" type="button" onclick="startDictation()" id="startBtn">
+            <img src="{% static 'icons/Voice.jpg' %}" alt="Voice" />
+          </button>
+          <button class="icon-button" type="submit">
+            <img src="{% static 'icons/Search.jpg' %}" alt="Search" />
+          </button>
+          <button class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click();">
+            <img src="{% static 'icons/Camera.jpg' %}" alt="Camera" />
+          </button>
+        </div>
       </form>
-      <button id="imageUploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data"
-        style="display: none;">
-        {% csrf_token %}
-        <input type="file" name="image" accept="image/*" id="imageInput" onchange="uploadImage();">
-      </button>
     </div>
+    <form id="imageUploadForm" action="{% url 'search_upload_image' %}" method="post" enctype="multipart/form-data"
+      style="display: none;">
+      {% csrf_token %}
+      <input type="file" name="image" accept="image/*" id="imageInput" onchange="uploadImage();">
+    </form>
     <button class="user-icon" title="USER">
       <a href="{% url 'profile' %}" class="user-icon" title="USER">
         <img src="{% static 'icons/User.jpg' %}" alt="USER">
@@ -221,7 +237,6 @@
       var xhr = new XMLHttpRequest();
       xhr.open('POST', form.action, true);
       xhr.setRequestHeader('X-CSRFToken', formData.get('csrfmiddlewaretoken'));  // 从表单获取并设置 CSRF token
-
       xhr.onload = function () {
         if (this.status == 200) {
           var response = JSON.parse(this.response);
@@ -233,13 +248,14 @@
       };
 
       xhr.send(formData);
+      alert("ERROR CHECK");
     }
     function displayProductInfo(product) {
       var container = document.querySelector('.items-grid');
       container.innerHTML = '';  // 清空现有内容
 
       // 直接构建静态图片路径
-      const imageUrl = `/static/images/pics/webp/${product.ProductName}.webp`;
+      const imageUrl = `/static/products/webp/${product.ProductName}.webp`;
 
       const productHTML = `
     <div class="item">

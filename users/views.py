@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 
-from .forms import UserRegisterForm, LoginForm, FeedbackForm
-from .models import User
+from .forms import UserRegisterForm, LoginForm, FeedbackForm, ImageUploadForm
+from .models import User, Product
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -94,3 +95,26 @@ def coupon(request):
 def my_logout(request):
     logout(request)
     return redirect("login")
+
+
+def homepage_upload_image(request):
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        print(form.is_valid())
+        if form.is_valid():
+            image = request.FILES['image']
+            product_name = image.name.rsplit('.', 1)[0]
+            try:
+                product = Product.objects.get(product_name=product_name)
+                data = {
+                    "product_name": product.product_name,
+                    "Block": product.block,
+                    "Shelf": product.shelf,
+                    "Level": product.level,
+                    "Price": str(product.price),
+                    "Unit": product.unit,
+                }
+                return JsonResponse(data)
+            except Product.DoesNotExist:
+                return JsonResponse({"error": "Product not found"}, status=404)
+    return JsonResponse({"error": "Invalid form"}, status=400)
