@@ -2,9 +2,8 @@
 
 import openai
 
-openai.api_base = "https://api.chatgpt-4.net.cn/v1",
-openai.api_key = "sk-proj-G179W2H9MskoCXNhIHqWT3BlbkFJR8cCPnO6ZnbQ5W1mlM6Q"
-
+openai.api_base = "https://api.zhiyungpt.com/v1"
+openai.api_key = "sk-mMag0QVCTbog5iJmA7Cb5a3047Ee4f0d8b81D2477a5b61Da"
 
 def use_gpt(user_prompt):
 
