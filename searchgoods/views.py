@@ -58,6 +58,8 @@ def upload_image(request):
         if form.is_valid():
             image = request.FILES['image']
             product_name = image.name.rsplit('.', 1)[0]
+            print("******************")
+            print(product_name)
             try:
                 product = Product.objects.get(ProductName=product_name)
                 data = {

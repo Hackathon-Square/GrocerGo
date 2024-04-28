@@ -42,6 +42,19 @@ def use_gpt(user_prompt):
         }
     }
 
+    Input: "apple"
+    Output: {
+        "Action": "find",
+        "Details": {
+            "Block": null,
+            "Shelf": null,
+            "Level": null,
+            "ProductName": ["apple"],
+            "Price": null,
+            "Stock": null
+        }
+    }
+
     Input: "I find apples in block B but your database shows it in A block."
     Output: {
         "Action": "update",

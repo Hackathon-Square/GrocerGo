@@ -144,15 +144,13 @@
         <button class="icon-button" type="submit">
           <img src="{% static 'icons/Search.jpg' %}" alt="Search" />
         </button>
-        <button class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click();">
-          <img src="{% static 'icons/Camera.jpg' %}" alt="Camera" />
+        <!-- Hidden image upload input -->
+        <input type="file" id="imageInput" style="display: none;" onchange="uploadImage()">
+        <button type="button" class="icon-button" title="Image Search" onclick="document.getElementById('imageInput').click()">
+          <img src="{% static 'icons/Camera.jpg' %}" alt="Camera">
         </button>
       </form>
-      <button id="imageUploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data"
-        style="display: none;">
-        {% csrf_token %}
-        <input type="file" name="image" accept="image/*" id="imageInput" onchange="uploadImage();">
-      </button>
+      
     </div>
     <button class="user-icon" title="USER">
       <a href="{% url 'profile' %}" class="user-icon" title="USER">
@@ -216,23 +214,26 @@
       }
     }
     function uploadImage() {
-      var form = document.getElementById('imageUploadForm');
-      var formData = new FormData(form);
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', form.action, true);
-      xhr.setRequestHeader('X-CSRFToken', formData.get('csrfmiddlewaretoken'));  // 从表单获取并设置 CSRF token
+      var fileInput = document.getElementById('imageInput');
+      var file = fileInput.files[0];
+      var formData = new FormData();
+      formData.append('image', file);
 
-      xhr.onload = function () {
-        if (this.status == 200) {
-          var response = JSON.parse(this.response);
-          // 假设服务器返回的是产品信息
-          displayProductInfo(response);
-        } else {
-          console.error('Error uploading image:', this.statusText);
+      fetch('{% url "upload_image" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
         }
-      };
-
-      xhr.send(formData);
+      }).then(response => response.json())
+        .then(data => {
+          if(data.error) {
+            alert(data.error);
+          } else {
+            // Assuming the backend redirects to the search results page with the product information
+            window.location.href = '{% url "search_results" %}?query=' + encodeURIComponent(data.ProductName);
+          }
+        }).catch(error => console.error('Error uploading image:', error));
     }
     function displayProductInfo(product) {
       var container = document.querySelector('.items-grid');
