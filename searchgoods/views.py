@@ -59,15 +59,16 @@ def upload_image(request):
             image = request.FILES['image']
             product_name = image.name.rsplit('.', 1)[0]
             try:
-                product = Product.objects.get(product_name=product_name)
+                product = Product.objects.get(ProductName=product_name)
                 data = {
-                    "product_name": product.product_name,
-                    "Block": product.block,
-                    "Shelf": product.shelf,
-                    "Level": product.level,
-                    "Price": str(product.price),
-                    "Unit": product.unit,
+                    "ProductName": product.ProductName,
+                    "Block": product.Block,
+                    "Shelf": product.Shelf,
+                    "Level": product.Level,
+                    "Price": str(product.Price),
+                    "Unit": product.Unit,
                 }
+                print(data)
                 return JsonResponse(data)
             except Product.DoesNotExist:
                 return JsonResponse({"error": "Product not found"}, status=404)
